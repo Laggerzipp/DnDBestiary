@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyBottomNav" parent="Widget.Design.BottomNavigationView">
+        <item name="android:itemBackground">@color/red</item>
+    </style>
+</resources>
