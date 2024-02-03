@@ -8,8 +8,8 @@ Magic Potions Catalog is a mobile application that provides access to the catalo
 ## Technologies:
 - View binding
 - Room
+- Coroutines
 - Retrofit
 - Picasso
-- Coroutines
 ## API
 API: https://docs.potterdb.com/
