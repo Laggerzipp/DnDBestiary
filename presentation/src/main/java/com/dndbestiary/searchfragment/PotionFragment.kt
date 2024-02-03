@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentSearchBinding
+import com.hfad.data.retrofit.ApiClient
+import com.hfad.data.retrofit.ApiService
 import com.hfad.data.retrofit.Potion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +27,6 @@ class PotionFragment : Fragment() {
         fun newInstance() = PotionFragment()
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -40,7 +40,7 @@ class PotionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         var potion: Potion
         CoroutineScope(Dispatchers.IO).launch {
-            //potion = ApiClient.apiService.getPotionByIndex(viewModel.potionId)
+           // potion = ApiClient().getClient().create(ApiService::class.java).getPotionByIndex(viewModel.potionId)
 //            withContext(Dispatchers.Main){
 //                Picasso.get().load(potion.attributes.image).into(binding.imInfo)
 //            }
