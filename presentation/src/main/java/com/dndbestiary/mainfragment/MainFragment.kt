@@ -1,17 +1,30 @@
 package mainfragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dndbestiary.databinding.FragmentMainBinding
-import com.hfad.data.Monster
+import com.example.example.Monster
+import com.hfad.data.retrofit.ApiClient
+import com.hfad.data.retrofit.ApiService
+import com.hfad.data.retrofit.MonsterGeneralList
+import com.hfad.data.retrofit.MonsterList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+private lateinit var apiService: ApiService
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
+
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()
@@ -19,10 +32,13 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        apiService = ApiClient().getClient().create(ApiService::class.java)
+
         binding = FragmentMainBinding.inflate(inflater)
         return binding.root
     }
@@ -31,11 +47,15 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = MainAdapter()
-        val monster1 = Monster("first","gfdgdf")
-        val monster2 = Monster("second","dfhdfh")
-        adapter.addItem(monster1)
-        adapter.addItem(monster2)
-        binding.rvMain.layoutManager = GridLayoutManager(requireContext(),3)
+        binding.rvMain.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMain.adapter = adapter
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+           val monsterList = apiService.getMonsterList()
+           withContext(Dispatchers.Main){
+               adapter.submitList(monsterList.results)
+           }
+        }
     }
 }
