@@ -1,7 +1,7 @@
-package mainfragment
+package com.dndbestiary.mainfragment
 
 import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+    var potionId:String? = null
 }

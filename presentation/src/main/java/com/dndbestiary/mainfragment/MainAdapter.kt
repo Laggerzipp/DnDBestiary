@@ -1,4 +1,4 @@
-package mainfragment
+package com.dndbestiary.mainfragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,9 @@ import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(private val listener: Listener): ListAdapter<Potion,MainAdapter.MyViewHolder>(Comparator()) {
+class MainAdapter(private val listener: Listener): ListAdapter<Potion, MainAdapter.MyViewHolder>(
+    Comparator()
+) {
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
         private val binding = MainMonsterItemBinding.bind(view)
 
@@ -20,7 +22,7 @@ class MainAdapter(private val listener: Listener): ListAdapter<Potion,MainAdapte
             Picasso.get().load(item.attributes.image).into(imInfo)
             tvInfo.text = item.attributes.name
             cardview.setOnClickListener {
-                listener.onClick(item)
+                listener.onClick(item.id)
             }
         }
     }
@@ -45,6 +47,6 @@ class MainAdapter(private val listener: Listener): ListAdapter<Potion,MainAdapte
     }
 
     interface Listener{
-        fun onClick(potion: Potion)
+        fun onClick(potionId: String)
     }
 }

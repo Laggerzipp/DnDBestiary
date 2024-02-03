@@ -6,8 +6,7 @@ import androidx.fragment.app.Fragment
 import com.dndbestiary.databinding.ActivityMainBinding
 import com.dndbestiary.libraryfragment.LibraryFragment
 import com.dndbestiary.searchfragment.PotionFragment
-import com.hfad.data.retrofit.Potion
-import mainfragment.MainFragment
+import com.dndbestiary.mainfragment.MainFragment
 
 class MainActivity : AppCompatActivity(),FragmentCallback {
     private lateinit var binding: ActivityMainBinding
@@ -28,8 +27,9 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         }
     }
 
-    override fun sendCallback(callback: String, potion: Potion?): Boolean {
+    override fun sendCallback(callback: String, potionId: String?): Boolean {
         val fragment: Fragment
+        val bundle = Bundle()
         if(callback == "openMainFragment"){
             fragment = MainFragment.newInstance()
             fragment.setFragmentCallback(this)
@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         if(callback == "openPotionFragment"){
             fragment = PotionFragment.newInstance()
             fragment.setFragmentCallback(this)
+            bundle.putString("id", potionId)
+            fragment.arguments = bundle
+
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.frMain, fragment)
