@@ -10,7 +10,8 @@
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        android:id="@+id/cardview">
 
         <ImageView
             android:id="@+id/imInfo"

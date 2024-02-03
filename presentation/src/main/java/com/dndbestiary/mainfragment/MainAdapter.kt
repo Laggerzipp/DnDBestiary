@@ -12,13 +12,16 @@ import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(): ListAdapter<Potion,MainAdapter.MyViewHolder>(Comparator()) {
+class MainAdapter(private val listener: Listener): ListAdapter<Potion,MainAdapter.MyViewHolder>(Comparator()) {
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
         private val binding = MainMonsterItemBinding.bind(view)
 
-        fun bind(item: Potion) = with(binding){
+        fun bind(item: Potion,listener: Listener) = with(binding){
             Picasso.get().load(item.attributes.image).into(imInfo)
             tvInfo.text = item.attributes.name
+            cardview.setOnClickListener {
+                listener.onClick(item)
+            }
         }
     }
 
@@ -38,6 +41,10 @@ class MainAdapter(): ListAdapter<Potion,MainAdapter.MyViewHolder>(Comparator()) 
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),listener)
+    }
+
+    interface Listener{
+        fun onClick(potion: Potion)
     }
 }
