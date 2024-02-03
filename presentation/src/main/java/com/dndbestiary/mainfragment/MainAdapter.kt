@@ -8,27 +8,26 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dndbestiary.R
 import com.dndbestiary.databinding.MainMonsterItemBinding
-import com.hfad.data.retrofit.MonsterGeneral
-import com.hfad.data.retrofit.MonsterList
+import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(): ListAdapter<MonsterGeneral,MainAdapter.MyViewHolder>(Comparator()) {
+class MainAdapter(): ListAdapter<Potion,MainAdapter.MyViewHolder>(Comparator()) {
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
         private val binding = MainMonsterItemBinding.bind(view)
 
-        fun bind(item: MonsterGeneral) = with(binding){
-            Picasso.get().load("https://www.dnd5eapi.co/api/images"+item.url.substringAfter("/api")+".png").into(imInfo)
-            tvInfo.text = item.name
+        fun bind(item: Potion) = with(binding){
+            Picasso.get().load(item.attributes.image).into(imInfo)
+            tvInfo.text = item.attributes.name
         }
     }
 
-    class Comparator: DiffUtil.ItemCallback<MonsterGeneral>(){
-        override fun areItemsTheSame(oldItem: MonsterGeneral, newItem: MonsterGeneral): Boolean {
-            return oldItem.index == newItem.index
+    class Comparator: DiffUtil.ItemCallback<Potion>(){
+        override fun areItemsTheSame(oldItem: Potion, newItem: Potion): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MonsterGeneral, newItem: MonsterGeneral): Boolean {
+        override fun areContentsTheSame(oldItem: Potion, newItem: Potion): Boolean {
            return oldItem == newItem
         }
 

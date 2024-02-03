@@ -1,7 +1,6 @@
 package mainfragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dndbestiary.databinding.FragmentMainBinding
-import com.example.example.Monster
 import com.hfad.data.retrofit.ApiClient
 import com.hfad.data.retrofit.ApiService
-import com.hfad.data.retrofit.MonsterGeneralList
-import com.hfad.data.retrofit.MonsterList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 private lateinit var apiService: ApiService
 
@@ -47,14 +41,14 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = MainAdapter()
-        binding.rvMain.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMain.layoutManager = GridLayoutManager(requireContext(),3)
         binding.rvMain.adapter = adapter
 
 
         CoroutineScope(Dispatchers.IO).launch {
-           val monsterList = apiService.getMonsterList()
+           val poitionsList = apiService.getPotions()
            withContext(Dispatchers.Main){
-               adapter.submitList(monsterList.results)
+               adapter.submitList(poitionsList.potions)
            }
         }
     }

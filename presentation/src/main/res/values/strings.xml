@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">DnDBestiary</string>
+    <string name="app_name">Magic Potions Catalog</string>
     <string name="favorites">Favorites</string>
     <string name="bestiary">Bestiary</string>
     <string name="search">Search</string>
+    <string name="mpcatalog">MPCatalog</string>
+    <string name="catalog">Catalog</string>
 </resources>

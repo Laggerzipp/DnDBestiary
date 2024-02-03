@@ -5,11 +5,11 @@
         android:id="@+id/favorites"
         android:icon="@drawable/ic_menu_favorites"/>
     <item
-        android:title="@string/bestiary"
-        android:id="@+id/bestiary"
+        android:title="@string/mpcatalog"
+        android:id="@+id/info"
         android:icon="@drawable/ic_menu_favorites"/>
     <item
-        android:title="@string/search"
-        android:id="@+id/search"
+        android:title="@string/catalog"
+        android:id="@+id/catalog"
         android:icon="@drawable/ic_menu_search"/>
 </menu>

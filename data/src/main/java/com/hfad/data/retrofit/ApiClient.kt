@@ -9,7 +9,7 @@ class ApiClient {
     fun getClient():Retrofit{
         if (retrofit == null){
             retrofit = Retrofit.Builder()
-                .baseUrl("https://www.dnd5eapi.co/api/")
+                .baseUrl("https://api.potterdb.com/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

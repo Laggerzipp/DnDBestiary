@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btmNav.selectedItemId = R.id.bestiary
+        binding.btmNav.selectedItemId = R.id.catalog
 
         supportFragmentManager
             .beginTransaction()
