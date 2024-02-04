@@ -67,17 +67,20 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             }
         }
     }
-    override fun onClick(potionId: String) {
-        fragmentCallback?.sendCallback("openPotionFragment", getPotionById(potionId))
+    override fun onClick(potionId: String, potionImage: String) {
+        fragmentCallback?.sendCallback("openPotionFragment", getPotionById(potionId, potionImage))
     }
 
-    private fun getPotionById(potionId: String): Potion?{
+    private fun getPotionById(potionId: String, potionImage: String): Potion?{
         var potion: Potion? = null
         for(p in this.potionsList?.potions!!){
             if(p.id == potionId){
                 potion = p
                 break
             }
+        }
+        if(potion?.attributes?.image == null){
+            potion?.attributes?.image = potionImage
         }
         return potion
     }

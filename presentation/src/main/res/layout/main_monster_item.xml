@@ -11,7 +11,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         app:cardCornerRadius="10dp"
-        android:id="@+id/cardview">
+        android:id="@+id/cardview"
+        app:cardUseCompatPadding="true">
 
         <ImageView
             android:id="@+id/imInfo"

@@ -42,5 +42,13 @@ class PotionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Picasso.get().load(viewModel?.potion?.attributes?.image).into(binding.imInfo)
+        binding.apply {
+            tvTitle.text = viewModel?.potion?.attributes?.name ?: "The name is unknown please consult with a master potionist"
+            tvChar.text = viewModel?.potion?.attributes?.characteristics ?: "The characteristics are unknown please consult with a master potionist"
+            tvDif.text = viewModel?.potion?.attributes?.difficulty ?: "The difficulty is unknown please consult with a master potionist"
+            tvIng.text = viewModel?.potion?.attributes?.ingredients ?: "The ingredients are unknown please consult with a master potionist"
+            tvEffect.text = viewModel?.potion?.attributes?.effect ?: "The effect is unknown please consult with a master potionist"
+            tvSideEf.text = (viewModel?.potion?.attributes?.sideEffects ?: "The side effects are unknown please consult with a master potionist").toString()
+        }
     }
 }

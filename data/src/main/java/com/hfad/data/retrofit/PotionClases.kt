@@ -22,7 +22,7 @@ data class PotionAttributes(
     val characteristics: String,
     val difficulty: String?,
     val effect: String,
-    val image: String,
+    var image: String,
     val inventors: Any?,
     val ingredients: String,
     val manufacturers: Any?,
