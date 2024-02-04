@@ -5,4 +5,9 @@
     <string name="search">Search</string>
     <string name="mpcatalog">MPCatalog</string>
     <string name="catalog">Catalog</string>
+    <string name="side_effectss">Side effectss:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="effect">Effect:</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="characteristics">Characteristics:</string>
 </resources>

@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         setContentView(binding.root)
 
         binding.btmNav.selectedItemId = R.id.catalog
+        binding.btmNav.itemIconTintList = null
         sendCallback("openMainFragment", null)
 
         binding.btmNav.setOnItemSelectedListener {
