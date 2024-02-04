@@ -3,16 +3,17 @@ package com.hfad.data.retrofit
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ApiClient {
-    private var retrofit: Retrofit? = null
+object ApiClient {
+    private const val BASE_URL = "https://api.potterdb.com/v1/"
 
-    fun getClient():Retrofit{
-        if (retrofit == null){
-            retrofit = Retrofit.Builder()
-                .baseUrl("https://api.potterdb.com/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return retrofit!!
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val apiService: ApiService by lazy {
+        retrofit.create(ApiService::class.java)
     }
 }
