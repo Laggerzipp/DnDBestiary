@@ -7,6 +7,8 @@ import com.dndbestiary.databinding.ActivityMainBinding
 import com.dndbestiary.libraryfragment.LibraryFragment
 import com.dndbestiary.searchfragment.PotionFragment
 import com.dndbestiary.mainfragment.MainFragment
+import com.google.gson.Gson
+import com.hfad.data.retrofit.Potion
 
 class MainActivity : AppCompatActivity(),FragmentCallback {
     private lateinit var binding: ActivityMainBinding
@@ -27,9 +29,10 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         }
     }
 
-    override fun sendCallback(callback: String, potionId: String?): Boolean {
+    override fun sendCallback(callback: String, potion: Potion?): Boolean {
         val fragment: Fragment
         val bundle = Bundle()
+        var potionString = Gson().toJson(potion)
         if(callback == "openMainFragment"){
             fragment = MainFragment.newInstance()
             fragment.setFragmentCallback(this)
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         if(callback == "openPotionFragment"){
             fragment = PotionFragment.newInstance()
             fragment.setFragmentCallback(this)
-            bundle.putString("id", potionId)
+            bundle.putString("potion", potionString)
             fragment.arguments = bundle
 
             supportFragmentManager

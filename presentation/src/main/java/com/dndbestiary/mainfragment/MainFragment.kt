@@ -12,6 +12,7 @@ import com.dndbestiary.databinding.FragmentMainBinding
 import com.hfad.data.retrofit.ApiClient
 import com.hfad.data.retrofit.ApiService
 import com.hfad.data.retrofit.Potion
+import com.hfad.data.retrofit.PotionResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import kotlinx.coroutines.withContext
 class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding
     private var fragmentCallback: FragmentCallback? = null
+    private var potionsList: PotionResponse? = null
 
     fun setFragmentCallback(callback: FragmentCallback){
         fragmentCallback = callback
@@ -57,16 +59,26 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             binding.progressBar.visibility = View.VISIBLE
         }
         CoroutineScope(Dispatchers.IO).launch {
-            val potionsList = ApiClient().getClient().create(ApiService::class.java).getPotions()
+            potionsList = ApiClient.apiService.getPotions()
             withContext(Dispatchers.Main){
-                adapter.submitList(potionsList.potions)
+                adapter.submitList(potionsList?.potions)
                 binding.progressBar.visibility = View.GONE
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
     }
     override fun onClick(potionId: String) {
-        ApiClient().resetClient()
-        fragmentCallback?.sendCallback("openPotionFragment", potionId)
+        fragmentCallback?.sendCallback("openPotionFragment", getPotionById(potionId))
+    }
+
+    private fun getPotionById(potionId: String): Potion?{
+        var potion: Potion? = null
+        for(p in this.potionsList?.potions!!){
+            if(p.id == potionId){
+                potion = p
+                break
+            }
+        }
+        return potion
     }
 }

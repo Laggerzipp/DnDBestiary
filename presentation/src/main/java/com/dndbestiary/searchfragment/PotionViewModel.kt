@@ -1,6 +1,7 @@
 package com.dndbestiary.searchfragment
 
 import androidx.lifecycle.ViewModel
+import com.hfad.data.retrofit.Potion
 
-class PotionViewModel(var potionId: String? = null) : ViewModel() {
+class PotionViewModel(var potion: Potion? = null) : ViewModel() {
 }
