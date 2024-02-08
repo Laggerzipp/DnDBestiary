@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentMainBinding
+import com.hfad.data.repository.MPRepository
 import com.hfad.data.retrofit.ApiClient
 import com.hfad.data.retrofit.Potion
 import com.hfad.data.retrofit.PotionResponse
@@ -57,7 +58,7 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             binding.progressBar.visibility = View.VISIBLE
         }
         CoroutineScope(Dispatchers.IO).launch {
-            potionsList = ApiClient.apiService.getPotions()
+            potionsList = MPRepository().getApi().getPotions()
             withContext(Dispatchers.Main){
                 adapter.submitList(potionsList?.potions)
                 binding.progressBar.visibility = View.GONE
