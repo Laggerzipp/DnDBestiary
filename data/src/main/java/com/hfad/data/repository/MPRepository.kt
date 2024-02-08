@@ -1,12 +1,28 @@
 package com.hfad.data.repository
 
-import com.hfad.data.retrofit.ApiClient
-import com.hfad.data.retrofit.ApiService
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.domain.DomainPotion
+import com.hfad.data.retrofit.MPApiClient
+import com.hfad.data.retrofit.toDomain
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MPRepository {
-    private val retrofit = ApiClient.apiService
+    private val _potionList = MutableLiveData<List<DomainPotion>>()
+    val potionList: LiveData<List<DomainPotion>> = _potionList
 
-    fun getApi():ApiService{
-        return retrofit
+    init {
+        fetchPotions()
     }
+
+    private fun fetchPotions() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val potionResponse = MPApiClient.apiService.getPotions()
+            val domainPotions = potionResponse.potions.map { it.toDomain() }
+            _potionList.postValue(domainPotions)
+        }
+    }
+
 }

@@ -42,8 +42,8 @@ android {
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("com.google.code.gson:gson:2.8.9")
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
