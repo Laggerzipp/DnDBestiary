@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         if(callback == "openLibraryFragment"){
             fragment = LibraryFragment.newInstance()
             fragment.setFragmentCallback(this)
-            openFragment(fragment,false)
+            openFragment(fragment,true)
             return true
         }
         return false
