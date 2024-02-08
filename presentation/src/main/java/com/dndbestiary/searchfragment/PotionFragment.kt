@@ -8,13 +8,8 @@ import android.view.ViewGroup
 import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentSearchBinding
 import com.google.gson.Gson
-import com.hfad.data.retrofit.ApiClient
-import com.hfad.data.retrofit.ApiService
 import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class PotionFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
