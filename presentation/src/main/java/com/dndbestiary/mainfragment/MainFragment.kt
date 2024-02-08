@@ -6,23 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentMainBinding
 import com.domain.DomainPotion
 import com.hfad.data.repository.MPRepository
 import com.hfad.data.retrofit.PotionResponse
-import com.hfad.data.retrofit.toDomain
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding
     private var fragmentCallback: FragmentCallback? = null
     private var potionResponse: PotionResponse? = null
-    private var potionList: ArrayList<DomainPotion> = arrayListOf()
+    private var potionList: List<DomainPotion> = listOf()
 
     fun setFragmentCallback(callback: FragmentCallback){
         fragmentCallback = callback
@@ -75,16 +71,13 @@ class MainFragment : Fragment(), MainAdapter.Listener {
         if(visibility){
             binding.progressBar.visibility = View.VISIBLE
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            potionResponse = MPRepository().getApi().getPotions()
 
-            withContext(Dispatchers.Main){
-                potionList = potionResponse?.potions?.map{it.toDomain()} as ArrayList<DomainPotion>
-                adapter.submitList(potionList)
-                binding.progressBar.visibility = View.GONE
-                binding.swipeRefreshLayout.isRefreshing = false
-            }
-        }
+        MPRepository().potionList.observe(viewLifecycleOwner, Observer { potions ->
+            adapter.submitList(potions)
+            binding.progressBar.visibility = View.GONE
+            binding.swipeRefreshLayout.isRefreshing = false
+            potionList = potions
+        })
     }
 
     private fun getPotionById(potionId: String, potionImage: String): DomainPotion?{

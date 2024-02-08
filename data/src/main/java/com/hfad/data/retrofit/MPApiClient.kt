@@ -3,7 +3,7 @@ package com.hfad.data.retrofit
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiClient {
+object MPApiClient {
     private const val BASE_URL = "https://api.potterdb.com/v1/"
 
     private val retrofit: Retrofit by lazy {
@@ -13,7 +13,7 @@ object ApiClient {
             .build()
     }
 
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
+    val apiService: MPApiService by lazy {
+        retrofit.create(MPApiService::class.java)
     }
 }
