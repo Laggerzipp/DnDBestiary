@@ -1,4 +1,4 @@
-package com.dndbestiary
+package com.dndbestiary.splashfragment
 
 import androidx.lifecycle.ViewModel
 

@@ -8,6 +8,7 @@ import com.dndbestiary.databinding.ActivityMainBinding
 import com.dndbestiary.libraryfragment.LibraryFragment
 import com.dndbestiary.searchfragment.PotionFragment
 import com.dndbestiary.mainfragment.MainFragment
+import com.dndbestiary.splashfragment.SplashFragment
 import com.google.gson.Gson
 import com.hfad.data.retrofit.Potion
 
