@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_primary_btm_nav"
+            android:contentDescription="@string/potion_image" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -28,5 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
-        android:text="TextView" />
+         />
 </LinearLayout>
