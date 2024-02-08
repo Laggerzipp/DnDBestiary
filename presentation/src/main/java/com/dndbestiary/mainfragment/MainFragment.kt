@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentMainBinding
 import com.hfad.data.repository.MPRepository
-import com.hfad.data.retrofit.ApiClient
 import com.hfad.data.retrofit.Potion
 import com.hfad.data.retrofit.PotionResponse
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +51,22 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             getData(adapter,false)
         }
         getData(adapter, true)
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(text: String?): Boolean {
+                searchPotionByName(adapter, text)
+                return true
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                searchPotionByName(adapter, text)
+                return true
+            }
+        })
+    }
+
+    override fun onClick(potionId: String, potionImage: String) {
+        fragmentCallback?.sendCallback("openPotionFragment", getPotionById(potionId, potionImage))
     }
 
     private fun getData(adapter: MainAdapter, visibility: Boolean){
@@ -66,9 +82,6 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             }
         }
     }
-    override fun onClick(potionId: String, potionImage: String) {
-        fragmentCallback?.sendCallback("openPotionFragment", getPotionById(potionId, potionImage))
-    }
 
     private fun getPotionById(potionId: String, potionImage: String): Potion?{
         var potion: Potion? = null
@@ -82,5 +95,24 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             potion?.attributes?.image = potionImage
         }
         return potion
+    }
+
+    private fun searchPotionByName(adapter:MainAdapter, text: String?):Boolean{
+        if (text.isNullOrEmpty()) {
+            adapter.submitList(potionsList?.potions)
+            return true
+        }
+
+        val filteredPotions: ArrayList<Potion> = ArrayList()
+        val searchText = text.lowercase().trim()
+
+        for (p in potionsList?.potions!!) {
+            if (p.attributes.name.lowercase().contains(searchText)) {
+                filteredPotions.add(p)
+            }
+        }
+
+        adapter.submitList(filteredPotions)
+        return true
     }
 }

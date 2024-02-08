@@ -5,10 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".mainfragment.MainFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMain"

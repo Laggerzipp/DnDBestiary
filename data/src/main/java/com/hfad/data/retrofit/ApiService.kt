@@ -7,5 +7,5 @@ interface ApiService {
     @GET("potions")
     suspend fun getPotions(): PotionResponse
     @GET("potions/{id}")
-    suspend fun getPotionByIndex(@Path("id") id: String?): Potion
+    suspend fun getPotionById(@Path("id") id: String?): Potion
 }
