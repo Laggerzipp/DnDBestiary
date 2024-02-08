@@ -1,7 +1,7 @@
 package com.dndbestiary
 
-import com.hfad.data.retrofit.Potion
+import com.domain.DomainPotion
 
 interface FragmentCallback {
-    fun sendCallback(callback: String, potion: Potion?) :Boolean
+    fun sendCallback(callback: String, potion: DomainPotion?) :Boolean
 }
