@@ -9,9 +9,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentMainBinding
+import com.domain.DomainPotion
 import com.hfad.data.repository.MPRepository
-import com.hfad.data.retrofit.Potion
 import com.hfad.data.retrofit.PotionResponse
+import com.hfad.data.retrofit.toDomain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import kotlinx.coroutines.withContext
 class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding
     private var fragmentCallback: FragmentCallback? = null
-    private var potionsList: PotionResponse? = null
+    private var potionResponse: PotionResponse? = null
+    private var potionList: ArrayList<DomainPotion> = arrayListOf()
 
     fun setFragmentCallback(callback: FragmentCallback){
         fragmentCallback = callback
@@ -74,40 +76,42 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             binding.progressBar.visibility = View.VISIBLE
         }
         CoroutineScope(Dispatchers.IO).launch {
-            potionsList = MPRepository().getApi().getPotions()
+            potionResponse = MPRepository().getApi().getPotions()
+
             withContext(Dispatchers.Main){
-                adapter.submitList(potionsList?.potions)
+                potionList = potionResponse?.potions?.map{it.toDomain()} as ArrayList<DomainPotion>
+                adapter.submitList(potionList)
                 binding.progressBar.visibility = View.GONE
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
     }
 
-    private fun getPotionById(potionId: String, potionImage: String): Potion?{
-        var potion: Potion? = null
-        for(p in this.potionsList?.potions!!){
+    private fun getPotionById(potionId: String, potionImage: String): DomainPotion?{
+        var potion: DomainPotion? = null
+        for(p in potionList){
             if(p.id == potionId){
                 potion = p
                 break
             }
         }
-        if(potion?.attributes?.image == null){
-            potion?.attributes?.image = potionImage
+        if(potion?.image == null){
+            potion?.image = potionImage
         }
         return potion
     }
 
     private fun searchPotionByName(adapter:MainAdapter, text: String?):Boolean{
         if (text.isNullOrEmpty()) {
-            adapter.submitList(potionsList?.potions)
+            adapter.submitList(potionList)
             return true
         }
 
-        val filteredPotions: ArrayList<Potion> = ArrayList()
+        val filteredPotions: ArrayList<DomainPotion> = ArrayList()
         val searchText = text.lowercase().trim()
 
-        for (p in potionsList?.potions!!) {
-            if (p.attributes.name.lowercase().contains(searchText)) {
+        for (p in potionList) {
+            if (p.name.lowercase().contains(searchText)) {
                 filteredPotions.add(p)
             }
         }

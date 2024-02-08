@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".searchfragment.PotionFragment">
+    tools:context=".potionfragment.PotionFragment">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

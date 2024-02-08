@@ -6,11 +6,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.dndbestiary.databinding.ActivityMainBinding
 import com.dndbestiary.libraryfragment.LibraryFragment
-import com.dndbestiary.searchfragment.PotionFragment
+import com.dndbestiary.potionfragment.PotionFragment
 import com.dndbestiary.mainfragment.MainFragment
 import com.dndbestiary.splashfragment.SplashFragment
+import com.domain.DomainPotion
 import com.google.gson.Gson
-import com.hfad.data.retrofit.Potion
 
 class MainActivity : AppCompatActivity(),FragmentCallback {
     private lateinit var binding: ActivityMainBinding
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         }
     }
 
-    override fun sendCallback(callback: String, potion: Potion?): Boolean {
+    override fun sendCallback(callback: String, potion: DomainPotion?): Boolean {
         val fragment: Fragment
         val bundle = Bundle()
         val potionString = Gson().toJson(potion)

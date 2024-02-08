@@ -8,20 +8,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dndbestiary.R
 import com.dndbestiary.databinding.MainMonsterItemBinding
+import com.domain.DomainPotion
 import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(private val listener: Listener): ListAdapter<Potion, MainAdapter.MyViewHolder>(
+class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, MainAdapter.MyViewHolder>(
     Comparator()
 ) {
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
         private val binding = MainMonsterItemBinding.bind(view)
 
-        fun bind(item: Potion,listener: Listener) = with(binding){
-            val potionImage = item.attributes.image ?: getRandomPotionImage()
+        fun bind(item: DomainPotion, listener: Listener) = with(binding){
+            val potionImage = item.image ?: getRandomPotionImage()
             Picasso.get().load(potionImage).into(imInfo)
-            tvInfo.text = item.attributes.name
+            tvInfo.text = item.name
             cardview.setOnClickListener {
                 listener.onClick(item.id, potionImage)
             }
@@ -50,12 +51,12 @@ class MainAdapter(private val listener: Listener): ListAdapter<Potion, MainAdapt
         }
     }
 
-    class Comparator: DiffUtil.ItemCallback<Potion>(){
-        override fun areItemsTheSame(oldItem: Potion, newItem: Potion): Boolean {
+    class Comparator: DiffUtil.ItemCallback<DomainPotion>(){
+        override fun areItemsTheSame(oldItem: DomainPotion, newItem: DomainPotion): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Potion, newItem: Potion): Boolean {
+        override fun areContentsTheSame(oldItem: DomainPotion, newItem: DomainPotion): Boolean {
            return oldItem == newItem
         }
 
