@@ -1,6 +1,7 @@
 package com.dndbestiary.mainfragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,11 +44,12 @@ class MainFragment : Fragment(), MainAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = MainAdapter(this)
-        binding.rvMain.layoutManager = GridLayoutManager(requireContext(),3)
-        binding.rvMain.adapter = adapter
-
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            getData(adapter,false)
+        binding.apply {
+            rvMain.layoutManager = GridLayoutManager(requireContext(),3)
+            rvMain.adapter = adapter
+            swipeRefreshLayout.setOnRefreshListener {
+                getData(adapter,false)
+            }
         }
         getData(adapter, true)
 
@@ -76,10 +78,17 @@ class MainFragment : Fragment(), MainAdapter.Listener {
         CoroutineScope(Dispatchers.IO).launch {
             val request = MPRepository().getPotions()
             withContext(Dispatchers.Main){
-                adapter.submitList(request?.potions)
-                binding.progressBar.visibility = View.GONE
-                binding.swipeRefreshLayout.isRefreshing = false
-                potionList = request?.potions!!
+                if (request != null) {
+                    Log.d("ApiRequest","Api request successful")
+
+                    adapter.submitList(request.potions)
+                    binding.progressBar.visibility = View.GONE
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    potionList = request.potions
+                }
+                else{
+                    Log.d("ApiRequest","Api request failed")
+                }
             }
         }
     }
