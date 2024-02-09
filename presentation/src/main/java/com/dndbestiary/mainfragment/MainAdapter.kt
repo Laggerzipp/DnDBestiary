@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dndbestiary.R
 import com.dndbestiary.databinding.MainMonsterItemBinding
 import com.domain.DomainPotion
-import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
 
 
