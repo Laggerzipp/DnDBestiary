@@ -1,13 +1,12 @@
 package com.hfad.data.repository
 
-import android.content.Context
 import com.domain.DomainPotion
 import com.domain.DomainPotions
 import com.hfad.data.database.MPDatabase
 import com.hfad.data.retrofit.RetrofitInstance
 import com.hfad.data.retrofit.toDomain
 
-class MPRepository {
+class MPRepository(private val db: MPDatabase) {
     suspend fun getPotions(): DomainPotions?{
         val response = RetrofitInstance.api.getPotions()
         if(response.isSuccessful){
@@ -17,8 +16,6 @@ class MPRepository {
         }
     }
 
-    suspend fun insertPotionDb(context: Context, potion: DomainPotion) {
-        val db = MPDatabase.getDb(context)
-        db.getDao().insertPotion(potion)
-    }
+   suspend fun insertPotionDb(potion: DomainPotion) = db.getDao().insertPotion(potion)
+
 }

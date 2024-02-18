@@ -27,7 +27,8 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
             }
             ibLike.setOnClickListener {
                 ibLike.setImageResource(R.drawable.ic_like_yes)
-                listener.onLikeClick(item.potionId, potionImage)
+                item.isFavorite = true
+                listener.onLikeClick(item)
             }
         }
 
@@ -75,6 +76,6 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
 
     interface Listener{
         fun onClick(potionId: String, potionImage: String)
-        fun onLikeClick(potionId: String, potionImage: String)
+        fun onLikeClick(potion: DomainPotion)
     }
 }

@@ -20,9 +20,9 @@ abstract class MPDatabase: RoomDatabase() {
                     MPDatabase::class.java,
                     "MPCatalogDb"
                 ).fallbackToDestructiveMigration().build()
-                Log.d("Db", "Database created successfully")
+                Log.d("DbInstance", "Database created successfully")
             } else {
-                Log.d("Db", "Using existing database instance")
+                Log.d("DbInstance", "Using existing database instance")
             }
             return INSTANCE!!
         }

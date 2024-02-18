@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,8 +16,8 @@ class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding
     private var fragmentCallback: FragmentCallback? = null
     private var potionList: List<DomainPotion> = listOf()
-    private val viewModel = MainViewModel()
     private val adapter = MainAdapter(this)
+    private lateinit var viewModel: MainViewModel
 
     fun setFragmentCallback(callback: FragmentCallback){
         fragmentCallback = callback
@@ -33,13 +32,14 @@ class MainFragment : Fragment(), MainAdapter.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-
         binding = FragmentMainBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = MainViewModel(requireContext())
 
         setupRecyclerView()
         setupSwipeToRefresh()
@@ -52,8 +52,8 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             viewModel.getPotionById(potionId, potionImage))
     }
 
-    override fun onLikeClick(potionId: String, potionImage: String) {
-        Toast.makeText(requireContext(),"gfdsfg",Toast.LENGTH_SHORT).show()
+    override fun onLikeClick(potion: DomainPotion) {
+        //viewModel.insertPotionIntoDb(potion)
     }
 
     private fun setupRecyclerView() {
