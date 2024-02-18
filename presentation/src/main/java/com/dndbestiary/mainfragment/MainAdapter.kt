@@ -27,13 +27,19 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
             }else{
                 ibLike.setImageResource(R.drawable.ic_like_no)
             }
+
             imInfo.setOnClickListener {
                 listener.onClick(item.potionId, potionImage)
             }
             ibLike.setOnClickListener {
-                ibLike.setImageResource(R.drawable.ic_like_yes)
-                item.isFavorite = true
-                listener.onLikeClick(item)
+                if(item.isFavorite){
+                    ibLike.setImageResource(R.drawable.ic_like_no)
+                    item.isFavorite = false
+                }else{
+                    ibLike.setImageResource(R.drawable.ic_like_yes)
+                    item.isFavorite = true
+                }
+                listener.onLikeClick(item, item.isFavorite)
             }
         }
 
@@ -81,6 +87,6 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
 
     interface Listener{
         fun onClick(potionId: String, potionImage: String)
-        fun onLikeClick(potion: DomainPotion)
+        fun onLikeClick(potion: DomainPotion, isAdd: Boolean)
     }
 }

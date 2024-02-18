@@ -29,7 +29,7 @@ data class PotionAttributes(
     val manufacturers: Any?,
     val name: String,
     @SerializedName("side_effects")
-    val sideEffects: Any?,
+    val sideEffects: String?,
     val time: Any?,
     val wiki: String
 )

@@ -15,6 +15,6 @@ data class DomainPotion(
     var image: String?,
     val ingredients: String?,
     val name: String,
-    val sideEffects: Any?,
+    val sideEffects: String?,
     var isFavorite: Boolean = false
 ): Serializable

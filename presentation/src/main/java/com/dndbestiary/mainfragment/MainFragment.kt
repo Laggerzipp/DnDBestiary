@@ -52,8 +52,12 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             viewModel.getPotionById(potionId, potionImage))
     }
 
-    override fun onLikeClick(potion: DomainPotion) {
-        viewModel.insertPotionIntoDb(potion)
+    override fun onLikeClick(potion: DomainPotion, isAdd: Boolean) {
+        if(isAdd){
+            viewModel.insertPotionIntoDb(potion)
+        }else{
+            viewModel.deletePotionFromDbByIndex(potion.potionId)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -71,7 +75,6 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             adapter.submitList(potions)
             potionList = potions
             binding.progressBar.visibility = View.GONE
-            binding.swipeRefreshLayout.isRefreshing = false
             viewModel.setPotionList(potionList)
         })
     }

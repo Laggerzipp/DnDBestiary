@@ -21,4 +21,7 @@ class MPRepository(private val db: MPDatabase) {
        return db.getDao().getPotionsFromDb()
    }
 
+   suspend fun deletePotionFromDbByIndex(potionIndex: String){
+        db.getDao().deletePotionByIndex(potionIndex)
+   }
 }

@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(context: Context) : ViewModel() {
-    // problem with database creation
     private val repository = MPRepository(MPDatabase.getDb(context))
     private var potionList: List<DomainPotion> = emptyList()
 
@@ -52,6 +51,11 @@ class MainViewModel(context: Context) : ViewModel() {
     fun insertPotionIntoDb(potion: DomainPotion){
         CoroutineScope(Dispatchers.IO).launch {
             repository.insertPotionDb(potion)
+        }
+    }
+    fun deletePotionFromDbByIndex(potionId: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deletePotionFromDbByIndex(potionId)
         }
     }
 
