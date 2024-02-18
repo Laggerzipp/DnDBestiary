@@ -17,5 +17,8 @@ class MPRepository(private val db: MPDatabase) {
     }
 
    suspend fun insertPotionDb(potion: DomainPotion) = db.getDao().insertPotion(potion)
+   suspend fun getPotionsFromDb(): List<DomainPotion>? {
+       return db.getDao().getPotionsFromDb()
+   }
 
 }

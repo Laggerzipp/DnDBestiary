@@ -22,6 +22,11 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
             val potionImage = item.image ?: getRandomPotionImage()
             Picasso.get().load(potionImage).into(imInfo)
             tvInfo.text = item.name
+            if(item.isFavorite){
+                ibLike.setImageResource(R.drawable.ic_like_yes)
+            }else{
+                ibLike.setImageResource(R.drawable.ic_like_no)
+            }
             imInfo.setOnClickListener {
                 listener.onClick(item.potionId, potionImage)
             }

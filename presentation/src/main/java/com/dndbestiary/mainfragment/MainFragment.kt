@@ -53,7 +53,7 @@ class MainFragment : Fragment(), MainAdapter.Listener {
     }
 
     override fun onLikeClick(potion: DomainPotion) {
-        //viewModel.insertPotionIntoDb(potion)
+        viewModel.insertPotionIntoDb(potion)
     }
 
     private fun setupRecyclerView() {

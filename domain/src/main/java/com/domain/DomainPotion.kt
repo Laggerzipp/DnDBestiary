@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity
+@Entity(tableName = "potions")
 data class DomainPotion(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

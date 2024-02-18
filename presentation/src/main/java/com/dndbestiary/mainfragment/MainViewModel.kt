@@ -8,7 +8,9 @@ import androidx.lifecycle.liveData
 import com.domain.DomainPotion
 import com.hfad.data.database.MPDatabase
 import com.hfad.data.repository.MPRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainViewModel(context: Context) : ViewModel() {
     // problem with database creation
@@ -24,7 +26,19 @@ class MainViewModel(context: Context) : ViewModel() {
                 val request = repository.getPotions()
                 if (request != null) {
                     Log.d("ApiRequest", "Api request successful")
-                    emit(request.potions)
+
+                    val updatedPotions = request.potions.toMutableList()
+                    val favoritePotions = repository.getPotionsFromDb()
+                    favoritePotions?.let { favorites ->
+                        for (i in updatedPotions.indices) {
+                            val foundFavorite = favorites.find { it.potionId == updatedPotions[i].potionId }
+                            foundFavorite?.let { favorite ->
+                                updatedPotions[i] = favorite
+                            }
+                        }
+                    }
+
+                    emit(updatedPotions.toList())
                 } else {
                     Log.d("ApiRequest", "Api request failed")
                 }
@@ -35,11 +49,11 @@ class MainViewModel(context: Context) : ViewModel() {
         }
     }
 
-//    fun insertPotionIntoDb(potion: DomainPotion){
-//        CoroutineScope(Dispatchers.IO).launch {
-//            repository.insertPotionDb(potion)
-//        }
-//    }
+    fun insertPotionIntoDb(potion: DomainPotion){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.insertPotionDb(potion)
+        }
+    }
 
     fun getPotionById(potionId: String, potionImage: String): DomainPotion?{
         return potionList.find { it.potionId == potionId }?.apply {
