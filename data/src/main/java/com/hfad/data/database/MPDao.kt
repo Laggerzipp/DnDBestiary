@@ -5,5 +5,5 @@ import com.domain.DomainPotion
 
 interface MPDao {
     @Insert
-    suspend fun insertPotion(potion: DbPotion)
+    suspend fun insertPotion(potion: DomainPotion)
 }

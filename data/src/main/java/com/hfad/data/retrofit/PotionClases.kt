@@ -66,7 +66,7 @@ fun PotionResponse.toDomain(): DomainPotions{
 }
 fun Potion.toDomain() : DomainPotion{
     return DomainPotion(
-        id = this.id,
+        potionId = this.id,
         characteristics = this.attributes.characteristics,
         difficulty = this.attributes.difficulty,
         effect = this.attributes.effect,
