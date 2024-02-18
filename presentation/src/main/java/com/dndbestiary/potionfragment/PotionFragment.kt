@@ -36,6 +36,11 @@ class PotionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupUI()
+    }
+
+    private fun setupUI(){
         Picasso.get().load(viewModel?.potion?.image).into(binding.imInfo)
         binding.apply {
             tvTitle.text = viewModel?.potion?.name ?: "The name is unknown please consult with a master potionist"
