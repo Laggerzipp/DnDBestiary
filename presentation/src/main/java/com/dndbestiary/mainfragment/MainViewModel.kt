@@ -43,7 +43,7 @@ class MainViewModel(context: Context) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.e("ApiRequest", "Exception occurred", e)
-                emit(emptyList<DomainPotion>())
+                emit(emptyList())
             }
         }
     }
