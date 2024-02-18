@@ -19,22 +19,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.apply {
-            toolbar.visibility = View.GONE
-            btmNav.visibility = View.GONE
-            btmNav.selectedItemId = R.id.catalog
-            btmNav.itemIconTintList = null
-        }
-
-        sendCallback("openSplashFragment", null)
-
-        binding.btmNav.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.catalog -> sendCallback("openMainFragment", null)
-                R.id.favorites -> sendCallback("openLibraryFragment", null)
-                else -> true
-            }
-        }
+        setupUI()
     }
 
     override fun sendCallback(callback: String, potion: DomainPotion?): Boolean {
@@ -86,6 +71,23 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
                 .replace(R.id.frMain, fragment)
                 .addToBackStack(null)
                 .commit()
+        }
+    }
+
+    private fun setupUI(){
+        binding.apply {
+            toolbar.visibility = View.GONE
+            btmNav.visibility = View.GONE
+            btmNav.selectedItemId = R.id.catalog
+            btmNav.itemIconTintList = null
+        }
+        sendCallback("openSplashFragment", null)
+        binding.btmNav.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.catalog -> sendCallback("openMainFragment", null)
+                R.id.favorites -> sendCallback("openLibraryFragment", null)
+                else -> true
+            }
         }
     }
 }

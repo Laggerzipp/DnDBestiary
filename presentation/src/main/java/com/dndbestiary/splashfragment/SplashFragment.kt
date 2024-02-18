@@ -11,7 +11,7 @@ import com.dndbestiary.FragmentCallback
 import com.dndbestiary.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
-    lateinit var binding: FragmentSplashBinding
+    private lateinit var binding: FragmentSplashBinding
     private var fragmentCallback: FragmentCallback? = null
 
     fun setFragmentCallback(callback: FragmentCallback){

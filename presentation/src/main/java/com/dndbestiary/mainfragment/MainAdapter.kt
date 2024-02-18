@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dndbestiary.R
 import com.dndbestiary.databinding.MainMonsterItemBinding
 import com.domain.DomainPotion
-import com.hfad.data.retrofit.Potion
 import com.squareup.picasso.Picasso
 
 
@@ -23,8 +22,24 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
             val potionImage = item.image ?: getRandomPotionImage()
             Picasso.get().load(potionImage).into(imInfo)
             tvInfo.text = item.name
-            cardview.setOnClickListener {
-                listener.onClick(item.id, potionImage)
+            if(item.isFavorite){
+                ibLike.setImageResource(R.drawable.ic_like_yes)
+            }else{
+                ibLike.setImageResource(R.drawable.ic_like_no)
+            }
+
+            imInfo.setOnClickListener {
+                listener.onClick(item.potionId, potionImage)
+            }
+            ibLike.setOnClickListener {
+                if(item.isFavorite){
+                    ibLike.setImageResource(R.drawable.ic_like_no)
+                    item.isFavorite = false
+                }else{
+                    ibLike.setImageResource(R.drawable.ic_like_yes)
+                    item.isFavorite = true
+                }
+                listener.onLikeClick(item, item.isFavorite)
             }
         }
 
@@ -53,7 +68,7 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
 
     class Comparator: DiffUtil.ItemCallback<DomainPotion>(){
         override fun areItemsTheSame(oldItem: DomainPotion, newItem: DomainPotion): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.potionId == newItem.potionId
         }
 
         override fun areContentsTheSame(oldItem: DomainPotion, newItem: DomainPotion): Boolean {
@@ -72,5 +87,6 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
 
     interface Listener{
         fun onClick(potionId: String, potionImage: String)
+        fun onLikeClick(potion: DomainPotion, isAdd: Boolean)
     }
 }

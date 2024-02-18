@@ -1,28 +1,27 @@
 package com.hfad.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.domain.DomainPotion
-import com.hfad.data.retrofit.MPApiClient
+import com.domain.DomainPotions
+import com.hfad.data.database.MPDatabase
+import com.hfad.data.retrofit.RetrofitInstance
 import com.hfad.data.retrofit.toDomain
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class MPRepository {
-    private val _potionList = MutableLiveData<List<DomainPotion>>()
-    val potionList: LiveData<List<DomainPotion>> = _potionList
-
-    init {
-        fetchPotions()
-    }
-
-    private fun fetchPotions() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val potionResponse = MPApiClient.apiService.getPotions()
-            val domainPotions = potionResponse.potions.map { it.toDomain() }
-            _potionList.postValue(domainPotions)
+class MPRepository(private val db: MPDatabase) {
+    suspend fun getPotions(): DomainPotions?{
+        val response = RetrofitInstance.api.getPotions()
+        if(response.isSuccessful){
+            return response.body()?.toDomain()
+        } else {
+            throw Exception(response.errorBody().toString())
         }
     }
 
+   suspend fun insertPotionDb(potion: DomainPotion) = db.getDao().insertPotion(potion)
+   suspend fun getPotionsFromDb(): List<DomainPotion>? {
+       return db.getDao().getPotionsFromDb()
+   }
+
+   suspend fun deletePotionFromDbByIndex(potionIndex: String){
+        db.getDao().deletePotionByIndex(potionIndex)
+   }
 }

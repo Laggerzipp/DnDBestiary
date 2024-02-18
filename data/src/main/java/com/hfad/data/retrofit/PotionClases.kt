@@ -1,6 +1,7 @@
 package com.hfad.data.retrofit
 
 import com.domain.DomainPotion
+import com.domain.DomainPotions
 import com.google.gson.annotations.SerializedName
 
 data class PotionResponse(
@@ -28,7 +29,7 @@ data class PotionAttributes(
     val manufacturers: Any?,
     val name: String,
     @SerializedName("side_effects")
-    val sideEffects: Any?,
+    val sideEffects: String?,
     val time: Any?,
     val wiki: String
 )
@@ -58,9 +59,19 @@ data class Links(
     val last: String
 )
 
+fun PotionResponse.toDomain(): DomainPotions{
+    return DomainPotions(
+        potions = this.potions.map {it.toDomain()}.toList()
+    )
+}
 fun Potion.toDomain() : DomainPotion{
-    return DomainPotion(id, attributes.characteristics,
-        attributes.difficulty, attributes.effect,
-        attributes.image, attributes.ingredients,
-        attributes.name, attributes.sideEffects)
+    return DomainPotion(
+        potionId = this.id,
+        characteristics = this.attributes.characteristics,
+        difficulty = this.attributes.difficulty,
+        effect = this.attributes.effect,
+        image = this.attributes.image,
+        ingredients = this.attributes.ingredients,
+        name = this.attributes.name,
+        sideEffects = this.attributes.sideEffects)
 }
