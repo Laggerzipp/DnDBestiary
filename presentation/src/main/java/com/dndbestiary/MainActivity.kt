@@ -2,6 +2,7 @@ package com.dndbestiary
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.dndbestiary.databinding.ActivityMainBinding
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         if(callback == "openMainFragment"){
             binding.btmNav.visibility = View.VISIBLE
             binding.toolbar.visibility = View.VISIBLE
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
             fragment = MainFragment.newInstance()
             fragment.setFragmentCallback(this)
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
             return true
         }
         if(callback == "openPotionFragment"){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
             fragment = PotionFragment.newInstance()
             fragment.setFragmentCallback(this)
             bundle.putString("potion", potionString)
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
             return true
         }
         if(callback == "openLibraryFragment"){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
             fragment = LibraryFragment.newInstance()
             fragment.setFragmentCallback(this)
             openFragment(fragment,true)
@@ -75,6 +79,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
     }
 
     private fun setupUI(){
+        setSupportActionBar(binding.toolbar)
         binding.apply {
             toolbar.visibility = View.GONE
             btmNav.visibility = View.GONE
@@ -89,5 +94,26 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
                 else -> true
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                val fragmentManager = supportFragmentManager
+                if (fragmentManager.backStackEntryCount > 0) {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    fragmentManager.popBackStack()
+                } else {
+                    finish()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onBackPressed() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        super.onBackPressed()
     }
 }
