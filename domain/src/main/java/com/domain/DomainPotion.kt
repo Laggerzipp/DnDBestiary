@@ -1,5 +1,6 @@
 package com.domain
 
+import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
@@ -16,5 +17,6 @@ data class DomainPotion(
     val ingredients: String?,
     val name: String,
     val sideEffects: String?,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
+    var bitmapImage: Bitmap? = null
 ): Serializable

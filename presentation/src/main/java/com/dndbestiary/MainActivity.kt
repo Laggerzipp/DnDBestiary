@@ -27,39 +27,38 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         val fragment: Fragment
         val bundle = Bundle()
         val potionString = Gson().toJson(potion)
-        if(callback == "openSplashFragment"){
-            fragment = SplashFragment.newInstance()
-            fragment.setFragmentCallback(this)
-            openFragment(fragment, false)
-            return true
-        }
-        if(callback == "openMainFragment"){
-            binding.btmNav.visibility = View.VISIBLE
-            binding.toolbar.visibility = View.VISIBLE
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        when (callback) {
+            "openSplashFragment" -> {
+                fragment = SplashFragment.newInstance()
+                fragment.setFragmentCallback(this)
+                openFragment(fragment, false)
+            }
+            "openMainFragment" -> {
+                binding.btmNav.visibility = View.VISIBLE
+                binding.toolbar.visibility = View.VISIBLE
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-            fragment = MainFragment.newInstance()
-            fragment.setFragmentCallback(this)
-            openFragment(fragment,false)
-            return true
+                fragment = MainFragment.newInstance()
+                fragment.setFragmentCallback(this)
+                openFragment(fragment, false)
+            }
+            "openPotionFragment" -> {
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                fragment = PotionFragment.newInstance()
+                fragment.setFragmentCallback(this)
+                bundle.putString("potion", potionString)
+                fragment.arguments = bundle
+                openFragment(fragment, true)
+            }
+            "openLibraryFragment" -> {
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                fragment = LibraryFragment.newInstance()
+                fragment.setFragmentCallback(this)
+                openFragment(fragment, true)
+            }
+            else -> return false
         }
-        if(callback == "openPotionFragment"){
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            fragment = PotionFragment.newInstance()
-            fragment.setFragmentCallback(this)
-            bundle.putString("potion", potionString)
-            fragment.arguments = bundle
-            openFragment(fragment,true)
-            return true
-        }
-        if(callback == "openLibraryFragment"){
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            fragment = LibraryFragment.newInstance()
-            fragment.setFragmentCallback(this)
-            openFragment(fragment,true)
-            return true
-        }
-        return false
+        return true
     }
 
     private fun openFragment(fragment: Fragment, tag:Boolean){
@@ -80,13 +79,16 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
 
     private fun setupUI(){
         setSupportActionBar(binding.toolbar)
+
         binding.apply {
             toolbar.visibility = View.GONE
             btmNav.visibility = View.GONE
             btmNav.selectedItemId = R.id.catalog
             btmNav.itemIconTintList = null
         }
+
         sendCallback("openSplashFragment", null)
+
         binding.btmNav.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.catalog -> sendCallback("openMainFragment", null)
@@ -101,9 +103,13 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
             android.R.id.home -> {
                 val fragmentManager = supportFragmentManager
                 if (fragmentManager.backStackEntryCount > 0) {
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
                     fragmentManager.popBackStack()
-                } else {
+                    if(fragmentManager.backStackEntryCount - 1 == 0){
+                        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                        binding.btmNav.selectedItemId = R.id.catalog
+                    }
+                }
+                else {
                     finish()
                 }
                 true
@@ -112,6 +118,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         super.onBackPressed()
