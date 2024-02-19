@@ -19,27 +19,26 @@ class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, Mai
         private val binding = MainMonsterItemBinding.bind(view)
 
         fun bind(item: DomainPotion, listener: Listener) = with(binding){
-            val potionImage = item.image ?: getRandomPotionImage()
-            Picasso.get().load(potionImage).into(imInfo)
+            item.image =  item.image ?: getRandomPotionImage()
             tvInfo.text = item.name
+
             if(item.isFavorite){
+                item.bitmapImage?.let { imInfo.setImageBitmap(it) }
                 ibLike.setImageResource(R.drawable.ic_like_yes)
             }else{
+                Picasso.get().load(item.image).into(imInfo)
                 ibLike.setImageResource(R.drawable.ic_like_no)
             }
 
             imInfo.setOnClickListener {
-                listener.onClick(item.potionId, potionImage)
+                item.image?.let { imageUrl -> listener.onClick(item.potionId, imageUrl) }
             }
+
             ibLike.setOnClickListener {
-                if(item.isFavorite){
-                    ibLike.setImageResource(R.drawable.ic_like_no)
-                    item.isFavorite = false
-                }else{
-                    ibLike.setImageResource(R.drawable.ic_like_yes)
-                    item.isFavorite = true
-                }
-                listener.onLikeClick(item, item.isFavorite)
+                val isFavorite = !item.isFavorite
+                item.isFavorite = isFavorite
+                ibLike.setImageResource(if (isFavorite) R.drawable.ic_like_yes else R.drawable.ic_like_no)
+                listener.onLikeClick(item, isFavorite)
             }
         }
 
