@@ -1,10 +1,13 @@
 package com.dndbestiary.mainfragment
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dndbestiary.FragmentCallback
@@ -65,16 +68,27 @@ class MainFragment : Fragment(), MainAdapter.Listener {
     }
     private fun setupSwipeToRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getPotions().observe(viewLifecycleOwner) { potions ->
-                adapter.submitList(potions)
-                potionList = potions
+            if(checkInternetConnection()) {
+                viewModelObserver()
+            }
+            else{
                 binding.progressBar.visibility = View.GONE
-                viewModel.setPotionList(potionList)
+                Toast.makeText(requireContext(),"NO INTERNET CONNECTION", Toast.LENGTH_LONG).show()
             }
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
     private fun observePotions() {
+        if(checkInternetConnection()) {
+            viewModelObserver()
+        }
+        else{
+            binding.progressBar.visibility = View.GONE
+            Toast.makeText(requireContext(),"NO INTERNET CONNECTION", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun viewModelObserver(){
         viewModel.getPotions().observe(viewLifecycleOwner) { potions ->
             adapter.submitList(potions)
             potionList = potions
@@ -82,6 +96,7 @@ class MainFragment : Fragment(), MainAdapter.Listener {
             viewModel.setPotionList(potionList)
         }
     }
+
     private fun setupSearching() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
@@ -94,5 +109,14 @@ class MainFragment : Fragment(), MainAdapter.Listener {
                 return true
             }
         })
+    }
+
+    private fun checkInternetConnection(): Boolean{
+        val connectivityManager = this.context?.getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        return networkCapabilities != null
     }
 }
