@@ -1,6 +1,8 @@
 package com.dndbestiary.mainfragment
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +10,7 @@ import androidx.lifecycle.liveData
 import com.domain.DomainPotion
 import com.hfad.data.database.MPDatabase
 import com.hfad.data.repository.MPRepository
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,10 +52,12 @@ class MainViewModel(context: Context) : ViewModel() {
     }
 
     fun insertPotionIntoDb(potion: DomainPotion){
+        loadImageForPotion(potion)
         CoroutineScope(Dispatchers.IO).launch {
             repository.insertPotionDb(potion)
         }
     }
+
     fun deletePotionFromDbByIndex(potionId: String){
         CoroutineScope(Dispatchers.IO).launch {
             repository.deletePotionFromDbByIndex(potionId)
@@ -76,5 +81,26 @@ class MainViewModel(context: Context) : ViewModel() {
         }
         adapter.submitList(filteredPotions)
         return true
+    }
+
+    private fun loadImageForPotion(potion: DomainPotion) {
+        Picasso.get().load(potion.image).into(object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                if (bitmap != null) {
+                    Log.d("Picasso", "Image loaded successfully")
+                    potion.bitmapImage = bitmap
+                } else {
+                    Log.e("Picasso", "Error: Received empty bitmap")
+                }
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                Log.e("Picasso", "Error loading image: $e")
+            }
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                Log.d("Picasso", "Image loading started...")
+            }
+        })
     }
 }
