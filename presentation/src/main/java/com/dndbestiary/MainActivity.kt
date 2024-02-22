@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dndbestiary.databinding.ActivityMainBinding
@@ -46,10 +45,22 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
                     btmNav.visibility = View.VISIBLE
                 }
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
                 fragment = MainFragment.newInstance()
                 fragment.setFragmentCallback(this)
-                openFragment(fragment, false)
+
+                when (supportFragmentManager.backStackEntryCount) {
+                    1 -> {
+                        supportFragmentManager.popBackStack()
+                    }
+                    2 -> {
+                        supportFragmentManager.popBackStack()
+                        supportFragmentManager.popBackStack()
+                    }
+                    else -> {
+                        supportFragmentManager.popBackStack()
+                        openFragment(fragment, false)
+                    }
+                }
             }
             "openPotionFragment" -> {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -63,11 +74,20 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
             }
             "openLibraryFragment" -> {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
                 fragment = LibraryFragment.newInstance()
                 fragment.setFragmentCallback(this)
-                openFragment(fragment, true)
-
+                when (supportFragmentManager.backStackEntryCount) {
+                    0 -> {
+                        openFragment(fragment, true)
+                    }
+                    1 -> {
+                        supportFragmentManager.popBackStack()
+                        openFragment(fragment, true)
+                    }
+                    2 -> {
+                        supportFragmentManager.popBackStack()
+                    }
+                }
             }
             else -> return false
         }
@@ -141,7 +161,9 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        if(supportFragmentManager.backStackEntryCount - 1 == 0) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
         super.onBackPressed()
     }
 }
