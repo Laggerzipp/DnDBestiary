@@ -5,21 +5,27 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.dndbestiary.databinding.ActivityMainBinding
 import com.dndbestiary.libraryfragment.LibraryFragment
 import com.dndbestiary.potionfragment.PotionFragment
 import com.dndbestiary.mainfragment.MainFragment
 import com.dndbestiary.splashfragment.SplashFragment
-import com.domain.DomainPotion
+import com.domain.model.DomainPotion
+import com.domain.FragmentCallback
 import com.google.gson.Gson
+import com.hfad.data.database.MPDatabase
+import com.hfad.data.repository.MPRepository
 
-class MainActivity : AppCompatActivity(),FragmentCallback {
+class MainActivity : AppCompatActivity(), FragmentCallback {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupViewModel()
         setupUI()
     }
 
@@ -31,30 +37,57 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
             "openSplashFragment" -> {
                 fragment = SplashFragment.newInstance()
                 fragment.setFragmentCallback(this)
-                openFragment(fragment, false)
+                openFragment(fragment,false)
             }
             "openMainFragment" -> {
-                binding.btmNav.visibility = View.VISIBLE
-                binding.toolbar.visibility = View.VISIBLE
+                binding.apply {
+                    toolbar.visibility = View.VISIBLE
+                    btmNav.visibility = View.VISIBLE
+                }
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
                 fragment = MainFragment.newInstance()
                 fragment.setFragmentCallback(this)
-                openFragment(fragment, false)
+
+                when (supportFragmentManager.backStackEntryCount) {
+                    1 -> {
+                        supportFragmentManager.popBackStack()
+                    }
+                    2 -> {
+                        supportFragmentManager.popBackStack()
+                        supportFragmentManager.popBackStack()
+                    }
+                    else -> {
+                        supportFragmentManager.popBackStack()
+                        openFragment(fragment, false)
+                    }
+                }
             }
             "openPotionFragment" -> {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
                 fragment = PotionFragment.newInstance()
                 fragment.setFragmentCallback(this)
                 bundle.putString("potion", potionString)
                 fragment.arguments = bundle
                 openFragment(fragment, true)
+
             }
             "openLibraryFragment" -> {
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 fragment = LibraryFragment.newInstance()
                 fragment.setFragmentCallback(this)
-                openFragment(fragment, true)
+                when (supportFragmentManager.backStackEntryCount) {
+                    0 -> {
+                        openFragment(fragment, true)
+                    }
+                    1 -> {
+                        supportFragmentManager.popBackStack()
+                        openFragment(fragment, true)
+                    }
+                    2 -> {
+                        supportFragmentManager.popBackStack()
+                    }
+                }
             }
             else -> return false
         }
@@ -77,11 +110,19 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         }
     }
 
+    private fun setupViewModel(){
+        val db = MPDatabase.getDb(this)
+        val repository = MPRepository(db)
+        val viewModelFactory = MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+
     private fun setupUI(){
         setSupportActionBar(binding.toolbar)
 
         binding.apply {
             toolbar.visibility = View.GONE
+            btmNav.menu.getItem(1).isEnabled = false
             btmNav.visibility = View.GONE
             btmNav.selectedItemId = R.id.catalog
             btmNav.itemIconTintList = null
@@ -120,7 +161,9 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        if(supportFragmentManager.backStackEntryCount - 1 == 0) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
         super.onBackPressed()
     }
 }

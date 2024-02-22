@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dndbestiary.FragmentCallback
+import com.dndbestiary.MainViewModel
+import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentMainBinding
-import com.domain.DomainPotion
+import com.domain.model.DomainPotion
 
 class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding
@@ -34,14 +36,13 @@ class MainFragment : Fragment(), MainAdapter.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         binding = FragmentMainBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = MainViewModel(requireContext())
 
         setupRecyclerView()
         setupSwipeToRefresh()
