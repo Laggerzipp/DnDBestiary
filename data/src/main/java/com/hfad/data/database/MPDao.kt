@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.domain.DomainPotion
+import com.domain.model.DomainPotion
 
 @Dao
 interface MPDao {

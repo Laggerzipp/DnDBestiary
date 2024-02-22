@@ -5,16 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dndbestiary.FragmentCallback
+import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentLibraryBinding
 import com.dndbestiary.mainfragment.MainAdapter
-import com.domain.DomainPotion
+import com.dndbestiary.MainViewModel
+import com.domain.model.DomainPotion
 
 class LibraryFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentLibraryBinding
     private var fragmentCallback: FragmentCallback? = null
-    private lateinit var viewModel: LibraryViewModel
+    private lateinit var viewModel: MainViewModel
     private val adapter = MainAdapter(this)
 
     fun setFragmentCallback(callback: FragmentCallback){
@@ -29,14 +31,13 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         binding = FragmentLibraryBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = LibraryViewModel(requireContext())
 
         setupRecyclerView()
         setupSwipeToRefresh()
