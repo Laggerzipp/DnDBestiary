@@ -20,7 +20,6 @@ import com.domain.models.DomainPotion
 class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding
     private var fragmentCallback: FragmentCallback? = null
-    private var potionList: List<DomainPotion> = listOf()
     private val adapter = MainAdapter(this)
     private lateinit var viewModel: MainViewModel
 
@@ -47,6 +46,7 @@ class MainFragment : Fragment(), MainAdapter.Listener {
 
         setupRecyclerView()
         setupSwipeToRefresh()
+        setupViewModelObserver()
         observePotions()
         setupSearching()
     }
@@ -71,18 +71,18 @@ class MainFragment : Fragment(), MainAdapter.Listener {
     private fun setupSwipeToRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             if(checkInternetConnection()) {
-                viewModelObserver()
+                viewModel.getPotions()
             }
             else{
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(requireContext(),"NO INTERNET CONNECTION", Toast.LENGTH_LONG).show()
             }
-            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
     private fun observePotions() {
+        binding.progressBar.visibility = View.VISIBLE
         if(checkInternetConnection()) {
-            viewModelObserver()
+            viewModel.getPotions()
         }
         else{
             binding.progressBar.visibility = View.GONE
@@ -90,12 +90,11 @@ class MainFragment : Fragment(), MainAdapter.Listener {
         }
     }
 
-    private fun viewModelObserver(){
-        viewModel.getPotions().observe(viewLifecycleOwner) { potions ->
+    private fun setupViewModelObserver(){
+        viewModel.potionList.observe(viewLifecycleOwner) { potions ->
             adapter.submitList(potions)
-            potionList = potions
+            binding.swipeRefreshLayout.isRefreshing = false
             binding.progressBar.visibility = View.GONE
-            viewModel.setPotionList(potionList)
         }
     }
 

@@ -11,9 +11,8 @@ import com.domain.models.DomainPotion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, MainAdapter.MyViewHolder>(
-    Comparator()
-) {
+class MainAdapter(private val listener: Listener):
+    ListAdapter<DomainPotion, MainAdapter.MyViewHolder>(Comparator()) {
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
         private val binding = MainMonsterItemBinding.bind(view)
 

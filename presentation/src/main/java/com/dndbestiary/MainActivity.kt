@@ -114,9 +114,9 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
 
     private fun setupViewModel(){
         val db = MPDatabase.getDb(this)
-        val repository = MPRepositoryImpl(db)
-        val viewModelFactory = MainViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        val repository = MPRepositoryImpl(db = db)
+        viewModel = ViewModelProvider(
+            this, MainViewModelFactory(repository = repository))[MainViewModel::class.java]
     }
 
     private fun setupUI(){

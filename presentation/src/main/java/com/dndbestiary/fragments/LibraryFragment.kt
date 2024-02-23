@@ -41,7 +41,8 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
 
         setupRecyclerView()
         setupSwipeToRefresh()
-        observePotions()
+        setupViewModelObserver()
+        viewModel.getPotionsFromDb()
     }
 
     override fun onClick(potionId: String, potionImage: String) {
@@ -50,30 +51,22 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
     }
 
     override fun onLikeClick(potion: DomainPotion, isAdd: Boolean) {
-        if(isAdd){
-            viewModel.insertPotionIntoDb(potion)
-        }else{
-            viewModel.deletePotionFromDbByIndex(potion.potionId)
-        }
+        viewModel.deletePotionFromDbByIndex(potion.potionId)
     }
 
     private fun setupRecyclerView(){
         binding.rvLibrary.layoutManager = GridLayoutManager(requireContext(),2)
         binding.rvLibrary.adapter = adapter
     }
-    private fun observePotions(){
-        viewModel.getPotionsFromDb().observe(viewLifecycleOwner) { potions ->
+    private fun setupViewModelObserver(){
+        viewModel.potionListDb.observe(viewLifecycleOwner) { potions ->
             adapter.submitList(potions)
-            viewModel.setPotionList(potions)
         }
     }
 
     private fun setupSwipeToRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getPotionsFromDb().observe(viewLifecycleOwner) { potions ->
-                adapter.submitList(potions)
-                viewModel.setPotionList(potions)
-            }
+            viewModel.getPotionsFromDb()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }

@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.dndbestiary.MainAdapter
 import com.domain.models.DomainPotion
@@ -13,29 +13,32 @@ import com.domain.usecase.DeletePotionFromDbUseCase
 import com.domain.usecase.GetPotionsFromDbUseCase
 import com.domain.usecase.GetPotionsUseCase
 import com.domain.usecase.InsertPotionIntoDbUseCase
-import com.hfad.data.repository.MPRepositoryImpl
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(repository: MPRepositoryImpl) : ViewModel() {
-    private val insertPotionIntoDbUseCase = InsertPotionIntoDbUseCase(repository)
-    private val getPotionsUseCase = GetPotionsUseCase(repository)
-    private val deletePotionFromDbUseCase = DeletePotionFromDbUseCase(repository)
-    private val getPotionsFromDbUseCase = GetPotionsFromDbUseCase(repository)
-    private var potionList: List<DomainPotion> = emptyList()
+class MainViewModel(
+    private val insertPotionIntoDbUseCase: InsertPotionIntoDbUseCase,
+    private val getPotionsUseCase: GetPotionsUseCase,
+    private val deletePotionFromDbUseCase: DeletePotionFromDbUseCase,
+    private val getPotionsFromDbUseCase: GetPotionsFromDbUseCase
+) : ViewModel() {
 
-    fun setPotionList(potions: List<DomainPotion>) {
-        potionList = potions
-    }
-    fun getPotions(): LiveData<List<DomainPotion>> {
-        return liveData(Dispatchers.IO) {
-            try {
+    private var _potionList = MutableLiveData<List<DomainPotion>>()
+    var potionList: LiveData<List<DomainPotion>> = _potionList
+    private var _potionListDb = MutableLiveData<List<DomainPotion>>()
+    var potionListDb: LiveData<List<DomainPotion>> = _potionListDb
+    var potion: DomainPotion? = null
+
+    fun getPotions() {
+        try {
+            var updatedPotions: MutableList<DomainPotion>
+            viewModelScope.launch(Dispatchers.IO) {
                 val request = getPotionsUseCase.execute()
                 if (request != null) {
                     Log.d("ApiRequest", "Api request successful")
 
-                    val updatedPotions = request.potions.toMutableList()
+                    updatedPotions = request.potions.toMutableList()
                     val favoritePotions = getPotionsFromDbUseCase.execute()
                     favoritePotions?.let { favorites ->
                         for (i in updatedPotions.indices) {
@@ -45,27 +48,24 @@ class MainViewModel(repository: MPRepositoryImpl) : ViewModel() {
                             }
                         }
                     }
-
-                    emit(updatedPotions.toList())
+                    _potionList.postValue(updatedPotions.toList())
                 } else {
                     Log.d("ApiRequest", "Api request failed")
                 }
-            } catch (e: Exception) {
-                Log.e("ApiRequest", "Exception occurred", e)
-                emit(emptyList())
             }
+        }
+        catch (e: Exception) {
+            Log.e("ApiRequest", "Exception occurred", e)
         }
     }
 
-    fun getPotionsFromDb(): LiveData<List<DomainPotion>> {
-        return liveData(Dispatchers.IO) {
+    fun getPotionsFromDb(){
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val potionList = getPotionsFromDbUseCase.execute()
+                _potionListDb.postValue(getPotionsFromDbUseCase.execute())
                 Log.d("DBOperation", "Db request successful")
-                potionList?.let { emit(it) }
             } catch (e: Exception) {
                 Log.d("DBOperation", "Db request failed")
-                emit(emptyList())
             }
         }
     }
@@ -82,26 +82,26 @@ class MainViewModel(repository: MPRepositoryImpl) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             deletePotionFromDbUseCase.execute(potionId = potionId)
             Log.d("DBOperation", "Potion id deleted from database: $potionId")
+            getPotionsFromDb()
         }
     }
 
     fun getPotionById(potionId: String, potionImage: String): DomainPotion?{
-        return potionList.find { it.potionId == potionId }?.apply {
+        return _potionList.value?.find { it.potionId == potionId }?.apply {
             if (image == null) {
                 image = potionImage
             }
         }
     }
 
-    fun searchPotionByName(adapter: MainAdapter, text: String?): Boolean {
+    fun searchPotionByName(adapter: MainAdapter, text: String?) {
         val filteredPotions = if (text.isNullOrBlank()) {
             potionList
         } else {
             val searchText = text.lowercase().trim()
-            potionList.filter { it.name.lowercase().contains(searchText) }
+            MutableLiveData<List<DomainPotion>>(potionList.value?.filter { it.name.lowercase().contains(searchText) })
         }
-        adapter.submitList(filteredPotions)
-        return true
+        adapter.submitList(filteredPotions.value)
     }
 
     private fun loadImageForPotion(potion: DomainPotion) {
