@@ -1,20 +1,22 @@
-package com.dndbestiary.potionfragment
+package com.dndbestiary.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentSearchBinding
-import com.domain.model.DomainPotion
+import com.dndbestiary.viewmodel.MainViewModel
+import com.domain.models.DomainPotion
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 
 class PotionFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private var fragmentCallback: FragmentCallback? = null
-    private lateinit var viewModel : PotionViewModel
+    private lateinit var viewModel : MainViewModel
 
     fun setFragmentCallback(callback: FragmentCallback){
         fragmentCallback = callback
@@ -28,7 +30,8 @@ class PotionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        viewModel = PotionViewModel(Gson().fromJson(arguments?.getString("potion"), DomainPotion::class.java))
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        viewModel.potion = Gson().fromJson(arguments?.getString("potion"), DomainPotion::class.java)
 
         binding = FragmentSearchBinding.inflate(inflater)
         return binding.root

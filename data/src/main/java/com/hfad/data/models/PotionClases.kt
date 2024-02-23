@@ -1,7 +1,7 @@
-package com.hfad.data.retrofit
+package com.hfad.data.models
 
-import com.domain.model.DomainPotion
-import com.domain.model.DomainPotions
+import com.domain.models.DomainPotion
+import com.domain.models.DomainPotions
 import com.google.gson.annotations.SerializedName
 
 data class PotionResponse(

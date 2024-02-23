@@ -1,4 +1,4 @@
-package com.dndbestiary.mainfragment
+package com.dndbestiary
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,15 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dndbestiary.R
 import com.dndbestiary.databinding.MainMonsterItemBinding
-import com.domain.model.DomainPotion
+import com.domain.models.DomainPotion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(private val listener: Listener): ListAdapter<DomainPotion, MainAdapter.MyViewHolder>(
-    Comparator()
-) {
+class MainAdapter(private val listener: Listener):
+    ListAdapter<DomainPotion, MainAdapter.MyViewHolder>(Comparator()) {
     class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
         private val binding = MainMonsterItemBinding.bind(view)
 
