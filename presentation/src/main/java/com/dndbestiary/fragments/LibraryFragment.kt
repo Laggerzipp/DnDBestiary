@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentLibraryBinding
 import com.dndbestiary.MainAdapter
+import com.dndbestiary.R
 import com.dndbestiary.viewmodel.MainViewModel
 import com.domain.models.DomainPotion
 
@@ -47,7 +49,7 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
 
     override fun onClick(potionId: String, potionImage: String) {
         fragmentCallback?.sendCallback("openPotionFragment",
-            viewModel.getPotionById(potionId, potionImage))
+            viewModel.getPotionByIdOffline(potionId, potionImage))
     }
 
     override fun onLikeClick(potion: DomainPotion, isAdd: Boolean) {
@@ -65,6 +67,9 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
     }
 
     private fun setupSwipeToRefresh() {
+        binding.swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.red))
+        binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.layoutBackground))
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.getPotionsFromDb()
             binding.swipeRefreshLayout.isRefreshing = false

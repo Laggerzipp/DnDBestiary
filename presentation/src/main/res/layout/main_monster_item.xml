@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:background="@drawable/rounded_shape"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
+        app:cardBackgroundColor="@color/layoutBackground"
         app:cardCornerRadius="10dp"
-        android:id="@+id/cardview"
         app:cardUseCompatPadding="true">
 
         <FrameLayout
@@ -30,12 +31,12 @@
                 android:id="@+id/ibLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                android:layout_marginTop="3dp"
                 android:layout_gravity="top|end"
-                android:src="@drawable/ic_like_no"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="3dp"
                 android:background="#00FFFFFF"
-                android:contentDescription="@string/like_button"/>
+                android:contentDescription="@string/like_button"
+                android:src="@drawable/ic_like_no" />
 
         </FrameLayout>
 
@@ -43,9 +44,12 @@
 
     <TextView
         android:id="@+id/tvInfo"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_gravity="center"
-         />
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/app_name"
+        android:textColor="@color/red"
+        android:textStyle="bold" />
 </LinearLayout>

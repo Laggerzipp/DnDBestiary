@@ -94,6 +94,14 @@ class MainViewModel(
         }
     }
 
+    fun getPotionByIdOffline(potionId: String, potionImage: String): DomainPotion?{
+        return _potionListDb.value?.find { it.potionId == potionId }?.apply {
+            if (image == null) {
+                image = potionImage
+            }
+        }
+    }
+
     fun searchPotionByName(adapter: MainAdapter, text: String?) {
         val filteredPotions = if (text.isNullOrBlank()) {
             potionList
