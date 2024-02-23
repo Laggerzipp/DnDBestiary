@@ -1,4 +1,4 @@
-package com.dndbestiary
+package com.dndbestiary.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -7,16 +7,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.dndbestiary.mainfragment.MainAdapter
-import com.domain.model.DomainPotion
-import com.domain.useCases.UseCases
-import com.hfad.data.repository.MPRepository
+import com.dndbestiary.MainAdapter
+import com.domain.models.DomainPotion
+import com.domain.usecase.DeletePotionFromDbUseCase
+import com.domain.usecase.GetPotionsFromDbUseCase
+import com.domain.usecase.GetPotionsUseCase
+import com.domain.usecase.InsertPotionIntoDbUseCase
+import com.hfad.data.repository.MPRepositoryImpl
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(repository: MPRepository) : ViewModel() {
-    private val useCases:  UseCases = UseCases(repository)
+class MainViewModel(repository: MPRepositoryImpl) : ViewModel() {
+    private val insertPotionIntoDbUseCase = InsertPotionIntoDbUseCase(repository)
+    private val getPotionsUseCase = GetPotionsUseCase(repository)
+    private val deletePotionFromDbUseCase = DeletePotionFromDbUseCase(repository)
+    private val getPotionsFromDbUseCase = GetPotionsFromDbUseCase(repository)
     private var potionList: List<DomainPotion> = emptyList()
 
     fun setPotionList(potions: List<DomainPotion>) {
@@ -25,12 +31,12 @@ class MainViewModel(repository: MPRepository) : ViewModel() {
     fun getPotions(): LiveData<List<DomainPotion>> {
         return liveData(Dispatchers.IO) {
             try {
-                val request = useCases.getPotions()
+                val request = getPotionsUseCase.execute()
                 if (request != null) {
                     Log.d("ApiRequest", "Api request successful")
 
                     val updatedPotions = request.potions.toMutableList()
-                    val favoritePotions = useCases.getPotionsFromDb()
+                    val favoritePotions = getPotionsFromDbUseCase.execute()
                     favoritePotions?.let { favorites ->
                         for (i in updatedPotions.indices) {
                             val foundFavorite = favorites.find { it.potionId == updatedPotions[i].potionId }
@@ -54,7 +60,7 @@ class MainViewModel(repository: MPRepository) : ViewModel() {
     fun getPotionsFromDb(): LiveData<List<DomainPotion>> {
         return liveData(Dispatchers.IO) {
             try {
-                val potionList = useCases.getPotionsFromDb()
+                val potionList = getPotionsFromDbUseCase.execute()
                 Log.d("DBOperation", "Db request successful")
                 potionList?.let { emit(it) }
             } catch (e: Exception) {
@@ -67,14 +73,14 @@ class MainViewModel(repository: MPRepository) : ViewModel() {
     fun insertPotionIntoDb(potion: DomainPotion){
         loadImageForPotion(potion)
         viewModelScope.launch(Dispatchers.IO) {
-            useCases.insertPotionIntoDb(potion)
+            insertPotionIntoDbUseCase.execute(potion = potion)
             Log.d("DBOperation", "Potion inserted into database: $potion")
         }
     }
 
     fun deletePotionFromDbByIndex(potionId: String){
         viewModelScope.launch(Dispatchers.IO) {
-            useCases.deletePotionFromDbByIndex(potionId)
+            deletePotionFromDbUseCase.execute(potionId = potionId)
             Log.d("DBOperation", "Potion id deleted from database: $potionId")
         }
     }

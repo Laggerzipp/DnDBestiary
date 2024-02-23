@@ -1,6 +1,6 @@
-package com.dndbestiary.potionfragment
+package com.dndbestiary.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.domain.model.DomainPotion
+import com.domain.models.DomainPotion
 
 class PotionViewModel(var potion: DomainPotion? = null) : ViewModel()

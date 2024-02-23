@@ -1,4 +1,4 @@
-package com.dndbestiary.potionfragment
+package com.dndbestiary.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentSearchBinding
-import com.domain.model.DomainPotion
+import com.dndbestiary.viewmodel.PotionViewModel
+import com.domain.models.DomainPotion
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 

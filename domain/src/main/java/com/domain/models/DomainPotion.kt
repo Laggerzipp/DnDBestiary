@@ -1,4 +1,4 @@
-package com.domain.model
+package com.domain.models
 
 import android.graphics.Bitmap
 import androidx.room.Entity

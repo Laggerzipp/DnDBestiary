@@ -1,6 +1,6 @@
 package com.domain
 
-import com.domain.model.DomainPotion
+import com.domain.models.DomainPotion
 
 interface FragmentCallback {
     fun sendCallback(callback: String, potion: DomainPotion?) :Boolean

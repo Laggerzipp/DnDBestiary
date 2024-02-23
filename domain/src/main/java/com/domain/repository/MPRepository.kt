@@ -1,9 +1,9 @@
-package com.domain
+package com.domain.repository
 
-import com.domain.model.DomainPotion
-import com.domain.model.DomainPotions
+import com.domain.models.DomainPotion
+import com.domain.models.DomainPotions
 
-interface IMPRepository {
+interface MPRepository {
     suspend fun getPotions(): DomainPotions?
 
     suspend fun insertPotionDb(potion: DomainPotion)

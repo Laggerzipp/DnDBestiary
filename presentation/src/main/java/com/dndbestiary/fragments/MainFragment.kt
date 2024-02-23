@@ -1,4 +1,4 @@
-package com.dndbestiary.mainfragment
+package com.dndbestiary.fragments
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -11,10 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dndbestiary.MainViewModel
+import com.dndbestiary.MainAdapter
+import com.dndbestiary.viewmodel.MainViewModel
 import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentMainBinding
-import com.domain.model.DomainPotion
+import com.domain.models.DomainPotion
 
 class MainFragment : Fragment(), MainAdapter.Listener {
     private lateinit var binding: FragmentMainBinding

@@ -1,4 +1,4 @@
-package com.dndbestiary.splashfragment
+package com.dndbestiary.fragments
 
 import android.os.Bundle
 import android.os.Handler

@@ -7,15 +7,17 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dndbestiary.databinding.ActivityMainBinding
-import com.dndbestiary.libraryfragment.LibraryFragment
-import com.dndbestiary.potionfragment.PotionFragment
-import com.dndbestiary.mainfragment.MainFragment
-import com.dndbestiary.splashfragment.SplashFragment
-import com.domain.model.DomainPotion
+import com.dndbestiary.fragments.LibraryFragment
+import com.dndbestiary.fragments.PotionFragment
+import com.dndbestiary.fragments.MainFragment
+import com.dndbestiary.fragments.SplashFragment
+import com.dndbestiary.viewmodel.MainViewModel
+import com.dndbestiary.viewmodel.MainViewModelFactory
+import com.domain.models.DomainPotion
 import com.domain.FragmentCallback
 import com.google.gson.Gson
 import com.hfad.data.database.MPDatabase
-import com.hfad.data.repository.MPRepository
+import com.hfad.data.repository.MPRepositoryImpl
 
 class MainActivity : AppCompatActivity(), FragmentCallback {
     private lateinit var binding: ActivityMainBinding
@@ -112,7 +114,7 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
 
     private fun setupViewModel(){
         val db = MPDatabase.getDb(this)
-        val repository = MPRepository(db)
+        val repository = MPRepositoryImpl(db)
         val viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
