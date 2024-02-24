@@ -2,9 +2,6 @@
 <resources>
     <style name="MyBottomNav" parent="Widget.Design.BottomNavigationView">
         <item name="android:itemBackground">@color/red</item>
-    </style>
-
-    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

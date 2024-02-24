@@ -108,7 +108,7 @@ class MainFragment : Fragment(), MainAdapter.Listener {
     private fun setupSearching() {
         val searchEditText = binding.searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
         searchEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-        searchEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.redsearch))
+        searchEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.redSearch))
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {

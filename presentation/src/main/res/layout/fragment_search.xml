@@ -11,39 +11,35 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/layoutBackground"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="250dp"
-            android:layout_height="270dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/layoutBackground"
-            app:cardCornerRadius="20dp"
-            app:cardUseCompatPadding="true">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imInfo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="250dp"
+                android:background="@color/layoutBackground"
                 android:contentDescription="@string/potion_image"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_primary_btm_nav" />
 
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:layout_margin="10dp"
+                android:gravity="start"
+                android:padding="5dp"
+                android:textColor="@color/redSearch"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Andidote siwnnlafnlsd.fc dsf"/>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,6 +57,7 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="@string/characteristics"
+                android:textColor="@color/redSearch"
                 android:textStyle="bold" />
 
             <TextView
@@ -68,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textColor="@color/redSearch" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,6 +84,7 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="@string/difficulty"
+                android:textColor="@color/redSearch"
                 android:textStyle="bold" />
 
             <TextView
@@ -93,7 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textColor="@color/redSearch" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,6 +111,7 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="@string/effect"
+                android:textColor="@color/redSearch"
                 android:textStyle="bold" />
 
             <TextView
@@ -118,7 +119,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textColor="@color/redSearch" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,6 +138,7 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="@string/ingredients"
+                android:textColor="@color/redSearch"
                 android:textStyle="bold" />
 
             <TextView
@@ -143,7 +146,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textColor="@color/redSearch" />
         </LinearLayout>
 
         <LinearLayout
@@ -161,6 +165,7 @@
                 android:layout_weight="2"
                 android:padding="5dp"
                 android:text="@string/side_effectss"
+                android:textColor="@color/redSearch"
                 android:textStyle="bold" />
 
             <TextView
@@ -168,7 +173,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textColor="@color/redSearch" />
         </LinearLayout>
 
     </LinearLayout>
