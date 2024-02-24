@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dndbestiary.databinding.ActivityMainBinding
@@ -121,7 +122,6 @@ class MainActivity : AppCompatActivity(), FragmentCallback {
 
     private fun setupUI(){
         setSupportActionBar(binding.toolbar)
-
         binding.apply {
             toolbar.visibility = View.GONE
             btmNav.menu.getItem(1).isEnabled = false

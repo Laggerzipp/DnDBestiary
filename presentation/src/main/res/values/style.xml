@@ -2,5 +2,6 @@
 <resources>
     <style name="MyBottomNav" parent="Widget.Design.BottomNavigationView">
         <item name="android:itemBackground">@color/red</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

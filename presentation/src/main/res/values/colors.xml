@@ -2,5 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#FFA21313</color>
+    <color name="red">#760F0F</color>
+    <color name="redSearch">#961616</color>
+    <color name="layoutBackground">#181818</color>
+    <color name="textLike">#9B8585</color>
 </resources>
