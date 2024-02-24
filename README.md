@@ -5,11 +5,17 @@ Magic Potions Catalog is a mobile application that provides access to the catalo
 - Each individual potion has a personal page with a more detailed description of its characteristics.
 - It is possible to add potion to your personal library so that during the potions class the information is always quickly available.
 - Providing the ability to search for the desired potion.
+- It is possible to get offline access to your favourite pieces.
 ## Technologies:
+- SQLite
 - View binding
+- Kotlin Coroutines
+- SwipeRefreshLayout
+- LiveData
+- Gson
 - Room
-- Coroutines
 - Retrofit
 - Picasso
+- Dagger
 ## API
 API: https://docs.potterdb.com/
