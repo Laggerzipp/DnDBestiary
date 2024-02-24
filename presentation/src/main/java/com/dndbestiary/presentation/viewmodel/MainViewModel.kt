@@ -1,4 +1,4 @@
-package com.dndbestiary.viewmodel
+package com.dndbestiary.presentation.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dndbestiary.MainAdapter
+import com.dndbestiary.presentation.MainAdapter
 import com.domain.models.DomainPotion
 import com.domain.usecase.DeletePotionFromDbUseCase
 import com.domain.usecase.GetPotionsFromDbUseCase
@@ -21,7 +21,7 @@ class MainViewModel(
     private val insertPotionIntoDbUseCase: InsertPotionIntoDbUseCase,
     private val getPotionsUseCase: GetPotionsUseCase,
     private val deletePotionFromDbUseCase: DeletePotionFromDbUseCase,
-    private val getPotionsFromDbUseCase: GetPotionsFromDbUseCase
+    private val getPotionsFromDbUseCase: GetPotionsFromDbUseCase,
 ) : ViewModel() {
 
     private var _potionList = MutableLiveData<List<DomainPotion>>()
@@ -42,7 +42,8 @@ class MainViewModel(
                     val favoritePotions = getPotionsFromDbUseCase.execute()
                     favoritePotions?.let { favorites ->
                         for (i in updatedPotions.indices) {
-                            val foundFavorite = favorites.find { it.potionId == updatedPotions[i].potionId }
+                            val foundFavorite =
+                                favorites.find { it.potionId == updatedPotions[i].potionId }
                             foundFavorite?.let { favorite ->
                                 updatedPotions[i] = favorite
                             }
@@ -53,13 +54,12 @@ class MainViewModel(
                     Log.d("ApiRequest", "Api request failed")
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.e("ApiRequest", "Exception occurred", e)
         }
     }
 
-    fun getPotionsFromDb(){
+    fun getPotionsFromDb() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _potionListDb.postValue(getPotionsFromDbUseCase.execute())
@@ -70,7 +70,7 @@ class MainViewModel(
         }
     }
 
-    fun insertPotionIntoDb(potion: DomainPotion){
+    fun insertPotionIntoDb(potion: DomainPotion) {
         loadImageForPotion(potion)
         viewModelScope.launch(Dispatchers.IO) {
             insertPotionIntoDbUseCase.execute(potion = potion)
@@ -78,7 +78,7 @@ class MainViewModel(
         }
     }
 
-    fun deletePotionFromDbByIndex(potionId: String){
+    fun deletePotionFromDbByIndex(potionId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             deletePotionFromDbUseCase.execute(potionId = potionId)
             Log.d("DBOperation", "Potion id deleted from database: $potionId")
@@ -86,7 +86,7 @@ class MainViewModel(
         }
     }
 
-    fun getPotionById(potionId: String, potionImage: String): DomainPotion?{
+    fun getPotionById(potionId: String, potionImage: String): DomainPotion? {
         return _potionList.value?.find { it.potionId == potionId }?.apply {
             if (image == null) {
                 image = potionImage
@@ -94,7 +94,7 @@ class MainViewModel(
         }
     }
 
-    fun getPotionByIdOffline(potionId: String, potionImage: String): DomainPotion?{
+    fun getPotionByIdOffline(potionId: String, potionImage: String): DomainPotion? {
         return _potionListDb.value?.find { it.potionId == potionId }?.apply {
             if (image == null) {
                 image = potionImage
@@ -107,7 +107,9 @@ class MainViewModel(
             potionList
         } else {
             val searchText = text.lowercase().trim()
-            MutableLiveData<List<DomainPotion>>(potionList.value?.filter { it.name.lowercase().contains(searchText) })
+            MutableLiveData<List<DomainPotion>>(potionList.value?.filter {
+                it.name.lowercase().contains(searchText)
+            })
         }
         adapter.submitList(filteredPotions.value)
     }

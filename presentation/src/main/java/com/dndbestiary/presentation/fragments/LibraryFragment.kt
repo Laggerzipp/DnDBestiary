@@ -1,4 +1,4 @@
-package com.dndbestiary.fragments
+package com.dndbestiary.presentation.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentLibraryBinding
-import com.dndbestiary.MainAdapter
+import com.dndbestiary.presentation.MainAdapter
 import com.dndbestiary.R
-import com.dndbestiary.viewmodel.MainViewModel
+import com.dndbestiary.presentation.viewmodel.MainViewModel
 import com.domain.models.DomainPotion
 
 class LibraryFragment : Fragment(), MainAdapter.Listener {
@@ -21,9 +20,10 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
     private lateinit var viewModel: MainViewModel
     private val adapter = MainAdapter(this)
 
-    fun setFragmentCallback(callback: FragmentCallback){
+    fun setFragmentCallback(callback: FragmentCallback) {
         fragmentCallback = callback
     }
+
     companion object {
         @JvmStatic
         fun newInstance() = LibraryFragment()
@@ -48,27 +48,40 @@ class LibraryFragment : Fragment(), MainAdapter.Listener {
     }
 
     override fun onClick(potionId: String, potionImage: String) {
-        fragmentCallback?.sendCallback("openPotionFragment",
-            viewModel.getPotionByIdOffline(potionId, potionImage))
+        fragmentCallback?.sendCallback(
+            "openPotionFragment",
+            viewModel.getPotionByIdOffline(potionId, potionImage)
+        )
     }
 
     override fun onLikeClick(potion: DomainPotion, isAdd: Boolean) {
         viewModel.deletePotionFromDbByIndex(potion.potionId)
     }
 
-    private fun setupRecyclerView(){
-        binding.rvLibrary.layoutManager = GridLayoutManager(requireContext(),2)
+    private fun setupRecyclerView() {
+        binding.rvLibrary.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvLibrary.adapter = adapter
     }
-    private fun setupViewModelObserver(){
+
+    private fun setupViewModelObserver() {
         viewModel.potionListDb.observe(viewLifecycleOwner) { potions ->
             adapter.submitList(potions)
         }
     }
 
     private fun setupSwipeToRefresh() {
-        binding.swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.red))
-        binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.layoutBackground))
+        binding.swipeRefreshLayout.setColorSchemeColors(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        )
+        binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.layoutBackground
+            )
+        )
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.getPotionsFromDb()

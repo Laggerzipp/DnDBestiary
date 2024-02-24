@@ -18,5 +18,5 @@ data class DomainPotion(
     val name: String,
     val sideEffects: String?,
     var isFavorite: Boolean = false,
-    var bitmapImage: Bitmap? = null
-): Serializable
+    var bitmapImage: Bitmap? = null,
+) : Serializable

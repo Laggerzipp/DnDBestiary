@@ -1,10 +1,8 @@
-package com.domain.repository
+package com.hfad.data.storage
 
 import com.domain.models.DomainPotion
-import com.domain.models.DomainPotions
 
-interface MPRepository {
-    suspend fun getPotions(): DomainPotions?
+interface PotionStorage {
 
     suspend fun insertPotionIntoDb(potion: DomainPotion)
 

@@ -8,14 +8,14 @@ data class PotionResponse(
     @SerializedName("data")
     val potions: List<Potion>,
     val meta: Meta,
-    val links: Links
+    val links: Links,
 )
 
 data class Potion(
     val id: String,
     val type: String,
     val attributes: PotionAttributes,
-    val links: PotionLinks
+    val links: PotionLinks,
 )
 
 data class PotionAttributes(
@@ -31,40 +31,41 @@ data class PotionAttributes(
     @SerializedName("side_effects")
     val sideEffects: String?,
     val time: Any?,
-    val wiki: String
+    val wiki: String,
 )
 
 data class PotionLinks(
-    val self: String
+    val self: String,
 )
 
 data class Meta(
     val pagination: Pagination,
     val copyright: String,
     @SerializedName("generated_at")
-    val generatedAt: String
+    val generatedAt: String,
 )
 
 data class Pagination(
     val current: Int,
     val next: Int,
     val last: Int,
-    val records: Int
+    val records: Int,
 )
 
 data class Links(
     val self: String,
     val current: String,
     val next: String,
-    val last: String
+    val last: String,
 )
 
 fun PotionResponse.toDomain(): DomainPotions {
     return DomainPotions(
-        potions = this.potions.map {it.toDomain()}.toList()
+        potions = this.potions.map { it.toDomain() }.toList()
     )
 }
-fun Potion.toDomain() : DomainPotion {
+
+fun Potion.toDomain(): DomainPotion {
     return DomainPotion(
         potionId = this.id,
         characteristics = this.attributes.characteristics,
@@ -73,5 +74,6 @@ fun Potion.toDomain() : DomainPotion {
         image = this.attributes.image,
         ingredients = this.attributes.ingredients,
         name = this.attributes.name,
-        sideEffects = this.attributes.sideEffects)
+        sideEffects = this.attributes.sideEffects
+    )
 }

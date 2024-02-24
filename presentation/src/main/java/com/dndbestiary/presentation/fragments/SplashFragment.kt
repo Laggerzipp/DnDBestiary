@@ -1,4 +1,4 @@
-package com.dndbestiary.fragments
+package com.dndbestiary.presentation.fragments
 
 import android.os.Bundle
 import android.os.Handler
@@ -7,16 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.domain.FragmentCallback
 import com.dndbestiary.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
     private var fragmentCallback: FragmentCallback? = null
 
-    fun setFragmentCallback(callback: FragmentCallback){
+    fun setFragmentCallback(callback: FragmentCallback) {
         fragmentCallback = callback
     }
+
     companion object {
         @JvmStatic
         fun newInstance() = SplashFragment()
@@ -35,7 +35,7 @@ class SplashFragment : Fragment() {
 
         val delayMillis = 1500
         Handler(Looper.getMainLooper()).postDelayed({
-            fragmentCallback?.sendCallback("openMainFragment",null)
+            fragmentCallback?.sendCallback("openMainFragment", null)
         }, delayMillis.toLong())
     }
 

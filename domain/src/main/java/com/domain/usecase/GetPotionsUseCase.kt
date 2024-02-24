@@ -5,7 +5,7 @@ import com.domain.repository.MPRepository
 
 class GetPotionsUseCase(private val repository: MPRepository) {
 
-    suspend fun execute(): DomainPotions?{
+    suspend fun execute(): DomainPotions? {
         return repository.getPotions()
     }
 }

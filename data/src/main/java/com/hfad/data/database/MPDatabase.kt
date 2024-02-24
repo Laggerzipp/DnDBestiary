@@ -10,10 +10,10 @@ import com.domain.models.DomainPotion
 
 @Database(entities = [DomainPotion::class], version = 1)
 @TypeConverters(Converters::class)
-abstract class MPDatabase: RoomDatabase() {
+abstract class MPDatabase : RoomDatabase() {
     abstract fun getDao(): MPDao
 
-    companion object{
+    companion object {
         private var INSTANCE: MPDatabase? = null
         fun getDb(context: Context): MPDatabase {
             if (INSTANCE == null) {
