@@ -3,28 +3,25 @@ package com.hfad.data.repository
 import com.domain.repository.MPRepository
 import com.domain.models.DomainPotion
 import com.domain.models.DomainPotions
-import com.hfad.data.database.MPDatabase
-import com.hfad.data.retrofit.RetrofitInstance
-import com.hfad.data.models.toDomain
+import com.hfad.data.storage.NetworkStorage
+import com.hfad.data.storage.PotionStorage
 
-class MPRepositoryImpl(private val db: MPDatabase): MPRepository {
-    override suspend fun getPotions(): DomainPotions?{
-        val response = RetrofitInstance.api.getPotions()
-        if(response.isSuccessful){
-            return response.body()?.toDomain()
-        } else {
-            throw Exception(response.errorBody().toString())
-        }
+class MPRepositoryImpl(
+    private val potionStorage: PotionStorage, private val networkStorage: NetworkStorage,
+) : MPRepository {
+    override suspend fun getPotions(): DomainPotions? {
+        return networkStorage.getPotions()
     }
 
-    override suspend fun insertPotionDb(potion: DomainPotion){
-      return db.getDao().insertPotion(potion)
+    override suspend fun insertPotionIntoDb(potion: DomainPotion) {
+        return potionStorage.insertPotionIntoDb(potion = potion)
     }
+
     override suspend fun getPotionsFromDb(): List<DomainPotion>? {
-       return db.getDao().getPotionsFromDb()
-   }
+        return potionStorage.getPotionsFromDb()
+    }
 
-    override suspend fun deletePotionFromDbByIndex(potionIndex: String){
-        db.getDao().deletePotionByIndex(potionIndex)
-   }
+    override suspend fun deletePotionFromDbByIndex(potionIndex: String) {
+        potionStorage.deletePotionFromDbByIndex(potionIndex = potionIndex)
+    }
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -44,7 +45,7 @@ dependencies {
     implementation(project(":domain"))
 
     //Gson
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     //Picasso
     implementation("com.squareup.picasso:picasso:2.8")
@@ -61,6 +62,11 @@ dependencies {
     //Lifecycle
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    //Dagger
+    implementation("com.google.dagger:dagger:2.50")
+    kapt("com.google.dagger:dagger-compiler:2.50")
+    implementation("javax.inject:javax.inject:1")
 
     //Tests
     testImplementation("junit:junit:4.13.2")

@@ -5,7 +5,7 @@ import com.domain.models.DomainPotion
 
 class InsertPotionIntoDbUseCase(private val repository: MPRepository) {
 
-    suspend fun execute(potion: DomainPotion){
-        repository.insertPotionDb(potion)
+    suspend fun execute(potion: DomainPotion) {
+        repository.insertPotionIntoDb(potion)
     }
 }

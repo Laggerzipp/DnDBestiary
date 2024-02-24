@@ -1,4 +1,4 @@
-package com.dndbestiary
+package com.dndbestiary.presentation
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,24 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dndbestiary.R
 import com.dndbestiary.databinding.MainMonsterItemBinding
 import com.domain.models.DomainPotion
 import com.squareup.picasso.Picasso
 
 
-class MainAdapter(private val listener: Listener):
+class MainAdapter(private val listener: Listener) :
     ListAdapter<DomainPotion, MainAdapter.MyViewHolder>(Comparator()) {
-    class MyViewHolder(view: View):RecyclerView.ViewHolder(view){
+    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = MainMonsterItemBinding.bind(view)
 
-        fun bind(item: DomainPotion, listener: Listener) = with(binding){
-            item.image =  item.image ?: getRandomPotionImage()
+        fun bind(item: DomainPotion, listener: Listener) = with(binding) {
+            item.image = item.image ?: getRandomPotionImage()
             tvInfo.text = item.name
 
-            if(item.isFavorite){
+            if (item.isFavorite) {
                 item.bitmapImage?.let { imInfo.setImageBitmap(it) }
                 ibLike.setImageResource(R.drawable.ic_like_yes)
-            }else{
+            } else {
                 Picasso.get().load(item.image).into(imInfo)
                 ibLike.setImageResource(R.drawable.ic_like_no)
             }
@@ -40,7 +41,7 @@ class MainAdapter(private val listener: Listener):
             }
         }
 
-        private fun getRandomPotionImage(): String{
+        private fun getRandomPotionImage(): String {
             val potionImages = mutableListOf(
                 "https://i.pinimg.com/550x/79/f0/93/79f09362e401954d2f8543c550b353a4.jpg",
                 "https://static.vecteezy.com/system/resources/previews/023/174/912/non_2x/magic-potion-in-a-glass-bottle-3d-illustration-on-dark-background-ai-generative-image-free-photo.jpg",
@@ -63,26 +64,28 @@ class MainAdapter(private val listener: Listener):
         }
     }
 
-    class Comparator: DiffUtil.ItemCallback<DomainPotion>(){
+    class Comparator : DiffUtil.ItemCallback<DomainPotion>() {
         override fun areItemsTheSame(oldItem: DomainPotion, newItem: DomainPotion): Boolean {
             return oldItem.potionId == newItem.potionId
         }
 
         override fun areContentsTheSame(oldItem: DomainPotion, newItem: DomainPotion): Boolean {
-           return oldItem == newItem
+            return oldItem == newItem
         }
 
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.main_monster_item,parent,false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.main_monster_item, parent, false)
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(getItem(position),listener)
+        holder.bind(getItem(position), listener)
     }
 
-    interface Listener{
+    interface Listener {
         fun onClick(potionId: String, potionImage: String)
         fun onLikeClick(potion: DomainPotion, isAdd: Boolean)
     }
