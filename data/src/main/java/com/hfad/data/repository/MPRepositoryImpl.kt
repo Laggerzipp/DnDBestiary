@@ -14,7 +14,7 @@ class MPRepositoryImpl(
     }
 
     override suspend fun insertPotionIntoDb(potion: DomainPotion) {
-        return potionStorage.insertPotionIntoDb(potion = potion)
+        potionStorage.insertPotionIntoDb(potion = potion)
     }
 
     override suspend fun getPotionsFromDb(): List<DomainPotion>? {
