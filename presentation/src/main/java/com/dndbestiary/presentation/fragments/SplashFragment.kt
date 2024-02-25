@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import com.dndbestiary.R
 import com.dndbestiary.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
@@ -27,6 +30,11 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSplashBinding.inflate(inflater)
+
+        val fadeInAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
+        binding.imageView2.startAnimation(fadeInAnimation)
+        binding.imageView2.visibility = View.VISIBLE
+
         return binding.root
     }
 
